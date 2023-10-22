@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jDdEvAL3ag4tfJL+bTvJpBT7OZQz8dXjdfmJ7xDo3dy7uqzX/n6sTcESMJnDtRmxyo5anlmfhW6A3HRdher8+w==",
+  "dgSpecHash": "Gqd10FTgXVMkYiL0itTz6nVexSKuWA9TgaQPLESPyMCPEYIbmfnvfob6ZTjzcxBA6UX7dFXegpdOYTzAS6/Snw==",
   "success": true,
-  "projectFilePath": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\HackWeek\\Back-End\\Back-End\\Back-End.csproj",
+  "projectFilePath": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\siriusTech\\Back-End\\Back-End.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

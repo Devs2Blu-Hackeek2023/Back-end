@@ -3340,11 +3340,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\HackWeek\\Back-End\\Back-End\\Back-End.csproj",
+      "projectUniqueName": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\siriusTech\\Back-End\\Back-End.csproj",
       "projectName": "Back-End",
-      "projectPath": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\HackWeek\\Back-End\\Back-End\\Back-End.csproj",
+      "projectPath": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\siriusTech\\Back-End\\Back-End.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\HackWeek\\Back-End\\Back-End\\obj\\",
+      "outputPath": "D:\\Helena\\Documentos\\Cursos\\+Devs2Blu\\siriusTech\\Back-End\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",

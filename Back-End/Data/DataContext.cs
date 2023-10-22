@@ -8,7 +8,6 @@ namespace Back_End.Data
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-
         public DbSet<VeiculoModel> Veiculos { get; set; }
         public DbSet<EmissaoModel> Emissoes { get; set; }   
         public DbSet<ProprietarioModel> Proprietarios { get; set;}
