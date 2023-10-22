@@ -15,5 +15,34 @@ namespace Back_End.Data
         public DbSet<RuaModel> Ruas { get; set; }
         public DbSet<UsuarioModel> Usuarios { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<VeiculoModel>()
+                .HasOne(v => v.Proprietario)
+                .WithOne()
+                .HasForeignKey<VeiculoModel>(v => v.ProprietarioId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EmissaoModel>()
+                .HasOne(e => e.Veiculo)
+                .WithOne()
+                .HasForeignKey<EmissaoModel>(e => e.VeiculoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EmissaoModel>()
+                .HasOne(e => e.Rua)
+                .WithOne()
+                .HasForeignKey<EmissaoModel>(e => e.RuaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProprietarioModel>()
+                .HasOne(p => p.Usuario)
+                .WithOne()
+                .HasForeignKey<ProprietarioModel>(p => p.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        }
     }
 }
