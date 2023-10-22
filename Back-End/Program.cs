@@ -1,4 +1,5 @@
-global using Back_End.Data;
+using Back_End.Data;
+using Back_End.Services;
 using Back_End.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -17,11 +18,17 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<IEmissaoService, EmissaoService>
+builder.Services.AddScoped<IProprietarioService, ProprietarioService > ();
+builder.Services.AddScoped<IRuaService, RuaService > ();
+builder.Services.AddScoped < IVeiculoService ,VeiculoService > ();
+builder.Services.AddScoped < IEmissaoService ,EmissaoService>();
+
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())); 
+
 
 var app = builder.Build();
-
-
 
 
 
@@ -31,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

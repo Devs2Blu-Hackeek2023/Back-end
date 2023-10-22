@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Back_End.Data
 {
     public class DataContext : DbContext
-    {// public DbSet<AlienModel> Aliens { get; set; }
+    {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
