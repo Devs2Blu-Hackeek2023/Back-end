@@ -27,6 +27,6 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
 
-      - name: Run tests
-        run: dotnet test --configuration Release --filter FullyQualifiedName~YourNamespace.YourTestClass
+      - name: Run all tests
+        run: dotnet test --configuration Release
 
