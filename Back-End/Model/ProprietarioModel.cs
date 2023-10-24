@@ -8,6 +8,8 @@
         public string CNH { get; set; } = string.Empty;
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
-        public List<VeiculoModel> Veiculos { get; set; } = new List<VeiculoModel>();
+      
+
+        
     }
 }
