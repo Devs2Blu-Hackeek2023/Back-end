@@ -13,6 +13,6 @@
         public double KmL { get; set; }
         public int ProprietarioId { get; set; }
         public ProprietarioModel Proprietario { get; set; }
-        public List<string> Modificacoes { get; set; } = new List<string>();
+        public string Modificacoes { get; set; } = string.Empty;
     }
 }
