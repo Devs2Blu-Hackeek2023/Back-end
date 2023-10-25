@@ -15,7 +15,7 @@ namespace Back_End.Services
         {
             _dataContext = dataContext;
         }
-        public async Task CreateVeiculo(VeiculoDTO request)
+        public async Task CreateVeiculo(VeiculoModel request)
         {
             var veiculoModel = new VeiculoModel
             {
@@ -27,7 +27,9 @@ namespace Back_End.Services
                 Motor = request.Motor,
                 Combustivel = request.Combustivel,
                 KmL = request.KmL,
-                ProprietarioId = request.ProprietarioId
+                ProprietarioId = request.ProprietarioId,
+                Proprietario = request.Proprietario,
+                Modificacoes = request.Modificacoes 
             };
 
             _dataContext.Veiculos.Add(veiculoModel);
@@ -46,19 +48,16 @@ namespace Back_End.Services
             return await _dataContext.Veiculos.ToListAsync() ?? throw new ArgumentNullException("Veículos não encontrado! 404");
         }
 
-        public Task<double> GetEmissaoAnualVeiculo(int id)
+        public async Task<double> GetEmissaoDiaVeiculo(int id, DateTime data)
         {
-            throw new NotImplementedException();
-        }
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new ArgumentNullException("Veículo não encontrado! 404");
 
-        public Task<double> GetEmissaoMesVeiculo(int id)
-        {
-            throw new NotImplementedException();
-        }
+            var totalCO2 = await _dataContext.Emissoes
+                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Date == data.Date)
+                .Select(emissao => emissao.CO2 ?? 0.0)
+                .SumAsync();
 
-        public Task<double> GetEmissaoTotalVeiculo(int id)
-        {
-            throw new NotImplementedException();
+            return totalCO2;
         }
 
         public async Task<VeiculoModel> GetVeiculoById(int id)
@@ -71,9 +70,19 @@ namespace Back_End.Services
             return await _dataContext.Veiculos.FirstAsync(v => v.Placa == placa) ?? throw new ArgumentNullException("Veículo não encontrado! 404"); ;
         }
 
-        public Task UpdateVeiculo(int id, VeiculoModel request)
+        public async Task UpdateVeiculo(int id, VeiculoPutDTO request)
         {
-            throw new NotImplementedException();
+            var veiculoModel = new VeiculoModel
+            {
+                Placa = request.Placa,
+                Combustivel = request.Combustivel,
+                KmL = request.KmL,
+                ProprietarioId = request.ProprietarioId,
+                Proprietario = request.Proprietario,
+                Modificacoes = request.Modificacoes
+            };
+
+            await _dataContext.SaveChangesAsync();
         }
     }
 }
