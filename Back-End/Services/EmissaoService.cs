@@ -68,6 +68,7 @@ namespace Back_End.Services
             if (tipoCombustivel == "Diesel" || tipoCombustivel == "diesel") constante = 2.64;
             if (tipoCombustivel == "Gás Natural Veicular" || tipoCombustivel == "Gás" || tipoCombustivel == "GNV" || tipoCombustivel == "gas" || tipoCombustivel == "gás" || tipoCombustivel == "Gas") constante = 1.66;
             if (tipoCombustivel == "Etanol" || tipoCombustivel == "etanol" || tipoCombustivel == "Alcool" || tipoCombustivel == "alcool") constante = 0.504;
+            else constante = 2;
 
             double litros = kmRua / kml;
 
