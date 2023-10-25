@@ -10,14 +10,42 @@ namespace Back_End.Services
     public class EmissaoService : IEmissaoService
     {
         private readonly DataContext _context;
+
+        Random random = new Random(36);
+
         public EmissaoService(DataContext context)
         {
             _context = context;
         }
-        public Task CalculoEmissao(EmissaoModel emissaoModel)
+        public double CalculoEmissao(int id)
         {
-            throw new NotImplementedException();
+            var emissao =  _context.Emissoes.FirstOrDefault(e => e.Id == id) ?? throw new ArgumentNullException("Emissão não encontrada! 404");
+            var veiculo =  _context.Veiculos.FirstOrDefault(v => v.Id == emissao.VeiculoId) ?? throw new ArgumentNullException("Veiculo não encontrado! 404");
+            var rua =  _context.Ruas.FirstOrDefault(r => r.Id == emissao.RuaId) ?? throw new ArgumentNullException("Rua não encontrada! 404");
+            var tipoCombustivel = veiculo.Combustivel;
+            var kmRua = rua.Comprimento;
+            var kml = veiculo.KmL;
+            double constante = 0;
+
+            if(tipoCombustivel == "Gasolina" || tipoCombustivel == "gasolina") constante = 2.39;
+            if (tipoCombustivel == "Diesel" || tipoCombustivel == "diesel") constante = 2.64;
+            if (tipoCombustivel == "Gás Natural Veicular" || tipoCombustivel == "Gás" || tipoCombustivel == "GNV" || tipoCombustivel == "gas" || tipoCombustivel == "gás" || tipoCombustivel == "Gas") constante = 1.66;
+            if (tipoCombustivel == "Etanol" || tipoCombustivel == "etanol" || tipoCombustivel == "Alcool" || tipoCombustivel == "alcool") constante = 0.504;
+
+            double litros = kmRua / kml;
+
+            double resultado = litros * constante;
+
+            return resultado;
         }
+
+     /*   public async Task Emissao(VeiculoModel veiculo )
+        {
+            //var carro = 
+
+            int segundos = random.Next(300, 1200);
+            
+        }*/
 
         public async Task CreateEmissao(EmissaoPostDTO request) // editar
         {
