@@ -1,43 +1,96 @@
-﻿using Back_End.Model;
+﻿using Back_End.Data;
+using Back_End.DTOs;
+using Back_End.Model;
 using Back_End.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back_End.Services
 {
     public class EmissaoService : IEmissaoService
     {
+        private readonly DataContext _context;
+        public EmissaoService(DataContext context)
+        {
+            _context = context;
+        }
         public Task CalculoEmissao(EmissaoModel emissaoModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task CreateEmissao(EmissaoModel request)
+        public async Task CreateEmissao(EmissaoPostDTO request) // editar
         {
-            throw new NotImplementedException();
+            EmissaoModel model = new EmissaoModel()
+            {
+                DataInicio = request.DataInicio,
+                VeiculoId = request.VeiculoId,
+                RuaId = request.RuaId,
+                Veiculo = _context.Veiculos.FirstOrDefault(v => v.Id == request.VeiculoId),
+                Rua = _context.Ruas.FirstOrDefault(r => r.Id == request.RuaId),
+            };
+            await _context.Emissoes.AddAsync(model);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteEmissao(int id)
+        public async Task DeleteEmissao(int id)
         {
-            throw new NotImplementedException();
+            var request = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new ArgumentNullException("Emissão não encontrada! 404");
+            _context.Emissoes.Remove(request);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<List<EmissaoModel>> GetAllEmissao()
+        public async Task<List<EmissaoModel>> GetAllEmissao()
         {
-            throw new NotImplementedException();
+            return await _context.Emissoes.ToListAsync() ?? throw new ArgumentNullException("Emissão não encontrada! 404");
         }
 
-        public Task<EmissaoModel> GetEmissaoById(int id)
+        public async Task<EmissaoModel> GetEmissaoById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new ArgumentNullException("Emissão não encontrada! 404");
         }
 
-        public Task<double> GetEmissaoTotal()
+        public double? GetEmissaoTotal()
         {
-            throw new NotImplementedException();
+            return _context.Emissoes.Select(e => e.CO2).ToList().Sum();
         }
 
-        public Task UpdateEmissao(int id, EmissaoModel request)
+        public double? GetEmissaoDeTalAno(int ano)
         {
-            throw new NotImplementedException();
+            return _context.Emissoes.Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new ArgumentNullException("Não tem emissões desse ano! 404");
+        }
+
+        public double? GetEmissaoDeTalMes(int mes, int ano) // checar formato, mudar
+        {
+            return _context.Emissoes.Where(e => e.DataInicio.Month == mes).Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
+        }
+
+        public double? GetEmissaoDeTalDia(int dia, int mes, int ano) // checar formato
+        {
+            return _context.Emissoes.Where(e => e.DataInicio.Day == dia).Where(e => e.DataInicio.Month == mes).Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
+        }
+
+        public double? GetEmissaoDoUltimoAno()
+        {
+            return _context.Emissoes.Where(e => (DateTime.Now.Year - e.DataInicio.Year) <= 0).Select(e => e.CO2).ToList().Sum() ?? throw new ArgumentNullException("Não tem emissões desse ano! 404");
+        }
+
+        public double? GetEmissaoDoUltimoDia()
+        {
+            return _context.Emissoes.Where(e => ((DateTime.Now.Day - e.DataInicio.Day) <= 0) && ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Day - e.DataInicio.Day) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new ArgumentNullException("Não tem emissões desse dia! 404");
+        }
+        
+        public double? GetEmissaoDoUltimoMes()
+        {
+            return _context.Emissoes.Where(e => ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Year - e.DataInicio.Year) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
+        }
+    
+
+        public async Task UpdateEmissao(int id, EmissaoPutDTO request) //editar
+        {
+            var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new ArgumentNullException("Emissão não encontrada! 404");
+            model.DataFim = request.DataFim;
+            model.CO2 = request.CO2;
+            _context.SaveChanges();
         }
     }
 }

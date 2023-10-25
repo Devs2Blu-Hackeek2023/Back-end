@@ -1,23 +1,49 @@
-﻿using Back_End.Model;
+﻿using Back_End.Data;
+using Back_End.DTOs;
+using Back_End.Model;
 using Back_End.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back_End.Services
 {
     public class VeiculoService : IVeiculoService
     {
-        public Task CreateVeiculo(VeiculoModel request)
+        private readonly DataContext _dataContext;
+
+        public VeiculoService(DataContext dataContext)
         {
-            throw new NotImplementedException();
+            _dataContext = dataContext;
+        }
+        public async Task CreateVeiculo(VeiculoDTO request)
+        {
+            var veiculoModel = new VeiculoModel
+            {
+                Placa = request.Placa,
+                Modelo = request.Modelo,
+                Ano = request.Ano,
+                Marca = request.Marca,
+                Categoria = request.Categoria,
+                Motor = request.Motor,
+                Combustivel = request.Combustivel,
+                KmL = request.KmL,
+                ProprietarioId = request.ProprietarioId
+            };
+
+            _dataContext.Veiculos.Add(veiculoModel);
+            await _dataContext.SaveChangesAsync();
         }
 
-        public Task DeleteVeiculo(int id)
+        public async Task DeleteVeiculo(int id)
         {
-            throw new NotImplementedException();
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new ArgumentNullException("Veículo não encontrado! 404");
+            _dataContext.Veiculos.Remove(veiculo);
+            await _dataContext.SaveChangesAsync();
         }
 
-        public Task<List<VeiculoModel>> GetAllVeiculos()
+        public async Task<List<VeiculoModel>> GetAllVeiculos()
         {
-            throw new NotImplementedException();
+            return await _dataContext.Veiculos.ToListAsync() ?? throw new ArgumentNullException("Veículos não encontrado! 404");
         }
 
         public Task<double> GetEmissaoAnualVeiculo(int id)
@@ -35,14 +61,14 @@ namespace Back_End.Services
             throw new NotImplementedException();
         }
 
-        public Task<VeiculoModel> GetVeiculoById(int id)
+        public async Task<VeiculoModel> GetVeiculoById(int id)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Veiculos.FirstAsync(v => v.Id == id) ?? throw new ArgumentNullException("Veículo não encontrado! 404");
         }
 
-        public Task<VeiculoModel> GetVeiculoByPlaca(string placa)
+        public async Task<VeiculoModel> GetVeiculoByPlaca(string placa)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Veiculos.FirstAsync(v => v.Placa == placa) ?? throw new ArgumentNullException("Veículo não encontrado! 404"); ;
         }
 
         public Task UpdateVeiculo(int id, VeiculoModel request)
