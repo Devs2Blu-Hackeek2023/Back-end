@@ -3,7 +3,6 @@ using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Back_End.Services
 {
