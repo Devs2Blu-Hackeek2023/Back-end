@@ -397,8 +397,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-# Migrations folder
-Migrations/
 
 # Env file
 *.env

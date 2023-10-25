@@ -4,6 +4,7 @@ using Back_End.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back_End.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231024150446_oii")]
+    partial class oii
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,7 +148,7 @@ namespace Back_End.Migrations
 
                     b.Property<string>("Categoria")
                         .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Combustivel")
                         .IsRequired()
@@ -162,6 +165,10 @@ namespace Back_End.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Modificacoes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Motor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,15 +180,10 @@ namespace Back_End.Migrations
                     b.Property<int>("ProprietarioId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProprietarioModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProprietarioId")
                         .IsUnique();
-
-                    b.HasIndex("ProprietarioModelId");
 
                     b.ToTable("Veiculos");
                 });
@@ -224,16 +226,7 @@ namespace Back_End.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Back_End.Model.ProprietarioModel", null)
-                        .WithMany("Veiculos")
-                        .HasForeignKey("ProprietarioModelId");
-
                     b.Navigation("Proprietario");
-                });
-
-            modelBuilder.Entity("Back_End.Model.ProprietarioModel", b =>
-                {
-                    b.Navigation("Veiculos");
                 });
 #pragma warning restore 612, 618
         }
