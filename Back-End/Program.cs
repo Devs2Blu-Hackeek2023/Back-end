@@ -1,5 +1,6 @@
 using Back_End.Data;
 using Back_End.Services;
+using Back_End.Services.Camera;
 using Back_End.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IProprietarioService, ProprietarioService>();
 builder.Services.AddScoped<IRuaService, RuaService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<IEmissaoService, EmissaoService>();
+builder.Services.AddScoped<ICameraService, CameraService>();
 
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
