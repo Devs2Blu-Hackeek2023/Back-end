@@ -44,8 +44,11 @@ namespace Back_End.Services
         {
             var carro = await _camera.SortearVeiculoAsync();
             var rua =  await _camera.SortearRuaAsync();
+
             DateTime inicio = DateTime.Now;
+
             int segundos = random.Next(300, 1200);
+
             DateTime fim = inicio.AddSeconds(segundos);
 
             EmissaoPostDTO post = new EmissaoPostDTO(inicio, carro.Id, rua.Id);
@@ -55,8 +58,11 @@ namespace Back_End.Services
             double co2 = CalculoEmissao(emissao.Id);
 
             EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
+
+            UpdateEmissao(emissao.Id, put);
         }
 
+  
         public async Task<EmissaoModel?> CreateEmissao(EmissaoPostDTO request) // editar
         {
             EmissaoModel model = new EmissaoModel()
@@ -126,7 +132,7 @@ namespace Back_End.Services
         }
     
 
-        public async Task UpdateEmissao(int id, EmissaoPutDTO request) //editar
+        public async Task UpdateEmissao(int id, EmissaoPutDTO request) 
         {
             var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new ArgumentNullException("Emissão não encontrada! 404");
             model.DataFim = request.DataFim;
