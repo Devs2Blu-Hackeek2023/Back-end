@@ -1,6 +1,7 @@
 ﻿using Back_End.Data;
 using Back_End.DTOs;
 using Back_End.Model;
+using Back_End.Services.Camera;
 using Back_End.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -10,6 +11,7 @@ namespace Back_End.Services
     public class EmissaoService : IEmissaoService
     {
         private readonly DataContext _context;
+        private readonly CameraService _camera;
 
         Random random = new Random(36);
 
@@ -39,13 +41,14 @@ namespace Back_End.Services
             return resultado;
         }
 
-     /*   public async Task Emissao(VeiculoModel veiculo )
+        public async Task Emissao()
         {
-            //var carro = 
-
+            var carro = await _camera.SortearVeiculoAsync();
+            DateTime inicio = DateTime.Now;
             int segundos = random.Next(300, 1200);
+            DateTime fim = inicio.AddSeconds(segundos);
             
-        }*/
+        }
 
         public async Task CreateEmissao(EmissaoPostDTO request) // editar
         {
