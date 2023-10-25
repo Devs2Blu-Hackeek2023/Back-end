@@ -9,7 +9,7 @@ namespace Back_End.Model
         public string Modelo { get; set; } = string.Empty;
         public int Ano { get; set; }
         public string Marca { get; set; } = string.Empty;
-        public string Categoria { get; set; }
+        public string Categoria { get; set; } = string.Empty;
         public string Motor { get; set; } = string.Empty;
         public string Combustivel { get; set; } = string.Empty;
         public double KmL { get; set; }
