@@ -7,7 +7,6 @@ namespace Back_End.Services.Interfaces
         Task<RuaModel> GetRuaById(int Id);
         Task<List<RuaModel>> GetAllRuas();
         Task CreateRua(RuaModel request);
-        Task DeleteRua(int Id);
         Task UpdateRua(int Id, RuaModel request);
         Task<double> GetEmissaoMesRua(int Id);
         Task<double> GetEmissaoAnualRua(int Id);

@@ -1,4 +1,5 @@
-﻿using Back_End.Model;
+﻿using Back_End.DTOs;
+using Back_End.Model;
 
 namespace Back_End.Services.Interfaces
 {
@@ -6,9 +7,9 @@ namespace Back_End.Services.Interfaces
     {
         Task<ProprietarioModel> GetProprietarioById(int Id);
         Task<List<ProprietarioModel>> GetAllProprietarios();
-        Task CreateProprietario(ProprietarioModel request);
+        Task CreateProprietario(ProprietarioDTO request);
         Task DeleteProprietario(int Id);
         Task UpdateProprietario(int Id, ProprietarioModel request);
-        Task<List<VeiculoModel>> GetVeiculoByProprietario(int Id);
+        Task<List<VeiculoModel>> GetVeiculosByProprietario(int Id);
     }
 }
