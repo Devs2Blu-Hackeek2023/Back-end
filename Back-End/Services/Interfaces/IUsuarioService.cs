@@ -6,7 +6,7 @@ namespace Back_End.Services.Interfaces
     {
         Task UpdateSenha(int id, string request); 
         
-
+        Task CreateUsuario(UsuarioModel model);
 
     }
 }

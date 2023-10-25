@@ -1,19 +1,23 @@
-﻿using Back_End.Model;
+﻿using Back_End.Data;
+using Back_End.Model;
 using Back_End.Services.Interfaces;
 
 namespace Back_End.Services
 {
     public class RuaService : IRuaService
     {
-        public Task CreateRua(RuaModel request)
+        private readonly DataContext _dataContext;
+
+        public RuaService(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+
+        public async Task CreateRua(RuaModel request)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteRua(int Id)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<List<RuaModel>> GetAllRuas()
         {
