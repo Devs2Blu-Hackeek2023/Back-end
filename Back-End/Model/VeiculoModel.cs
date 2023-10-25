@@ -1,4 +1,6 @@
-﻿namespace Back_End.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Back_End.Model
 {
     public class VeiculoModel
     {

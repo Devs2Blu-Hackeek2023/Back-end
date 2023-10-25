@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back_End.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231022040140_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231024153403_ola")]
+    partial class ola
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,11 +50,9 @@ namespace Back_End.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RuaId")
-                        .IsUnique();
+                    b.HasIndex("RuaId");
 
-                    b.HasIndex("VeiculoId")
-                        .IsUnique();
+                    b.HasIndex("VeiculoId");
 
                     b.ToTable("Emissoes");
                 });
@@ -84,8 +82,7 @@ namespace Back_End.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Proprietarios");
                 });
@@ -148,7 +145,7 @@ namespace Back_End.Migrations
 
                     b.Property<string>("Categoria")
                         .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Combustivel")
                         .IsRequired()
@@ -165,6 +162,10 @@ namespace Back_End.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Modificacoes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Motor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -176,15 +177,9 @@ namespace Back_End.Migrations
                     b.Property<int>("ProprietarioId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProprietarioModelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProprietarioId")
-                        .IsUnique();
-
-                    b.HasIndex("ProprietarioModelId");
+                    b.HasIndex("ProprietarioId");
 
                     b.ToTable("Veiculos");
                 });
@@ -192,14 +187,14 @@ namespace Back_End.Migrations
             modelBuilder.Entity("Back_End.Model.EmissaoModel", b =>
                 {
                     b.HasOne("Back_End.Model.RuaModel", "Rua")
-                        .WithOne()
-                        .HasForeignKey("Back_End.Model.EmissaoModel", "RuaId")
+                        .WithMany()
+                        .HasForeignKey("RuaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Back_End.Model.VeiculoModel", "Veiculo")
-                        .WithOne()
-                        .HasForeignKey("Back_End.Model.EmissaoModel", "VeiculoId")
+                        .WithMany()
+                        .HasForeignKey("VeiculoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -211,8 +206,8 @@ namespace Back_End.Migrations
             modelBuilder.Entity("Back_End.Model.ProprietarioModel", b =>
                 {
                     b.HasOne("Back_End.Model.UsuarioModel", "Usuario")
-                        .WithOne()
-                        .HasForeignKey("Back_End.Model.ProprietarioModel", "UsuarioId")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -222,21 +217,12 @@ namespace Back_End.Migrations
             modelBuilder.Entity("Back_End.Model.VeiculoModel", b =>
                 {
                     b.HasOne("Back_End.Model.ProprietarioModel", "Proprietario")
-                        .WithOne()
-                        .HasForeignKey("Back_End.Model.VeiculoModel", "ProprietarioId")
+                        .WithMany()
+                        .HasForeignKey("ProprietarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Back_End.Model.ProprietarioModel", null)
-                        .WithMany("Veiculos")
-                        .HasForeignKey("ProprietarioModelId");
-
                     b.Navigation("Proprietario");
-                });
-
-            modelBuilder.Entity("Back_End.Model.ProprietarioModel", b =>
-                {
-                    b.Navigation("Veiculos");
                 });
 #pragma warning restore 612, 618
         }
