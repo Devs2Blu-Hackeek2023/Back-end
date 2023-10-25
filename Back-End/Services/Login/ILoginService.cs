@@ -1,6 +1,6 @@
 ﻿using Back_End.DTOs;
 
-namespace Back_End.Services.Interfaces
+namespace Back_End.Services.Login
 {
 	public interface ILoginService
 	{
