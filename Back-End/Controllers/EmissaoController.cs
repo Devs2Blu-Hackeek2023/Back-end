@@ -8,12 +8,26 @@ using System.Security.Cryptography;
 
 namespace Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class EmissaoController : ControllerBase
     {
         private readonly IEmissaoService _service;
         public EmissaoController(IEmissaoService service) {_service = service; }
+
+        [HttpPost("ia")]
+        public async Task<ActionResult> CreateEmissao()
+        {
+            try
+            {
+                await _service.Emissao();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult> CreateEmissao(EmissaoPostDTO request)

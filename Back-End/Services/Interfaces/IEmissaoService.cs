@@ -6,11 +6,11 @@ namespace Back_End.Services.Interfaces
     public interface IEmissaoService
     {
         Task<EmissaoModel> GetEmissaoById(int id);
-        Task<List<EmissaoModel>> GetAllEmissao(); 
-        Task CreateEmissao(EmissaoPostDTO request);
+        Task<List<EmissaoModel>> GetAllEmissao();
+        Task<EmissaoModel> CreateEmissao(EmissaoPostDTO request);
         Task DeleteEmissao(int id);
         Task UpdateEmissao(int id, EmissaoPutDTO request);
-        Task CalculoEmissao(EmissaoModel emissaoModel);
+        double CalculoEmissao(int id);
         double? GetEmissaoTotal();
         double? GetEmissaoDeTalAno(int ano);
         double? GetEmissaoDeTalMes(int mes, int ano);
@@ -18,5 +18,6 @@ namespace Back_End.Services.Interfaces
         double? GetEmissaoDoUltimoAno();
         double? GetEmissaoDoUltimoDia();
         double? GetEmissaoDoUltimoMes();
+        Task Emissao();
     }
 }

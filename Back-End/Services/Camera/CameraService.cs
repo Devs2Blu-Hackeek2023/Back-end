@@ -24,7 +24,7 @@ namespace Back_End.Services.Camera
 			{
 				int randomIndex = _random.Next(0, totalRuas);
 				RuaModel? randomRua = await _context.Ruas.OrderBy(r => r.Id)
-					.Skip(totalRuas)
+					.Skip(randomIndex)
 					.Take(1)
 					.FirstOrDefaultAsync();
 
@@ -49,25 +49,6 @@ namespace Back_End.Services.Camera
 			}
 		}
 
-		//public async Task<EmissaoModel?> IniciarEmissaoAsync(string CEP)
-		//{
-		//	EmissaoModel emissao = new EmissaoModel()
-		//	{
-		//		Veiculo = await SortearVeiculoAsync(),
-		//		Rua = await _context.Ruas.Where(r => r.CEP == CEP).FirstOrDefaultAsync(),
-		//		DataInicio = DateTime.Now
-		//	};
-
-		//	await _context.SaveChangesAsync();
-
-		//	return emissao;
-		//}
-
-		//public async Task<EmissaoModel?> FinalizarEmissaoAsync(EmissaoModel? emissao)
-		//{
-
-		//}
-
-		// public async CreateEmissao() {Chama Iniciar e finalizar}
+		public int SetTempo(int minSecs, int maxSecs) { return _random.Next(minSecs, maxSecs + 1); }
 	}
 }
