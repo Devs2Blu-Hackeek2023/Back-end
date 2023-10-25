@@ -21,26 +21,26 @@ namespace Back_End.Data
 
             modelBuilder.Entity<VeiculoModel>()
                 .HasOne(v => v.Proprietario)
-                .WithOne()
-                .HasForeignKey<VeiculoModel>(v => v.ProprietarioId)
+                .WithMany()
+                .HasForeignKey(v => v.ProprietarioId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<EmissaoModel>()
                 .HasOne(e => e.Veiculo)
-                .WithOne()
-                .HasForeignKey<EmissaoModel>(e => e.VeiculoId)
+                .WithMany()
+                .HasForeignKey(e => e.VeiculoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<EmissaoModel>()
                 .HasOne(e => e.Rua)
-                .WithOne()
-                .HasForeignKey<EmissaoModel>(e => e.RuaId)
+                .WithMany()
+                .HasForeignKey(e => e.RuaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ProprietarioModel>()
                 .HasOne(p => p.Usuario)
-                .WithOne()
-                .HasForeignKey<ProprietarioModel>(p => p.UsuarioId)
+                .WithMany()
+                .HasForeignKey(p => p.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
 
         }

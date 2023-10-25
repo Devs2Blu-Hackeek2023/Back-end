@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Back_End.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class oii : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,12 +72,12 @@ namespace Back_End.Migrations
                     Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ano = table.Column<int>(type: "int", nullable: false),
                     Marca = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Categoria = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Motor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Combustivel = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KmL = table.Column<double>(type: "float", nullable: false),
                     ProprietarioId = table.Column<int>(type: "int", nullable: false),
-                    ProprietarioModelId = table.Column<int>(type: "int", nullable: true)
+                    Modificacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,11 +88,6 @@ namespace Back_End.Migrations
                         principalTable: "Proprietarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Veiculos_Proprietarios_ProprietarioModelId",
-                        column: x => x.ProprietarioModelId,
-                        principalTable: "Proprietarios",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -147,11 +142,6 @@ namespace Back_End.Migrations
                 table: "Veiculos",
                 column: "ProprietarioId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Veiculos_ProprietarioModelId",
-                table: "Veiculos",
-                column: "ProprietarioModelId");
         }
 
         /// <inheritdoc />
