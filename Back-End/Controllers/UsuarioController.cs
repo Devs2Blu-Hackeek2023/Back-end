@@ -30,6 +30,6 @@ namespace Back_End.Controllers
         } 
 
 
-        private 
+         
     }
 }
