@@ -15,6 +15,23 @@ namespace Back_End.Services.Camera
 			_random = new Random();
 		}
 
+		public async Task<RuaModel?> SortearRuaAsync()
+		{
+			int totalRuas = await _context.Ruas.CountAsync();
+
+			if (totalRuas == 0) return null;
+			else
+			{
+				int randomIndex = _random.Next(0, totalRuas);
+				RuaModel? randomRua = await _context.Ruas.OrderBy(r => r.Id)
+					.Skip(totalRuas)
+					.Take(1)
+					.FirstOrDefaultAsync();
+
+				return randomRua;
+			}
+		}
+
 		public async Task<VeiculoModel?> SortearVeiculoAsync()
 		{
 			int totalVeiculos = await _context.Veiculos.CountAsync();
