@@ -36,10 +36,10 @@ namespace Back_End.Services.Trafego
 			{
 				EmissaoPostDTO emissao = new EmissaoPostDTO()
 				{
-					Id = null,
-					DataInicio = null,
-					VeiculoId = null,
-					RuaId = null
+					Id = 0,
+					DataInicio = DateTime.Now,
+					VeiculoId = 0,
+					RuaId = 0
 				};
 
 				string emissaoJSON = JsonConvert.SerializeObject(emissao);
