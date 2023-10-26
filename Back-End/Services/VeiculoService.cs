@@ -38,19 +38,19 @@ namespace Back_End.Services
 
         public async Task DeleteVeiculo(int id)
         {
-            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new ArgumentNullException("Veículo não encontrado! 404");
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
             _dataContext.Veiculos.Remove(veiculo);
             await _dataContext.SaveChangesAsync();
         }
 
         public async Task<List<VeiculoModel>> GetAllVeiculos()
         {
-            return await _dataContext.Veiculos.ToListAsync() ?? throw new ArgumentNullException("Veículos não encontrado! 404");
+            return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado! 404");
         }
 
         public async Task<double> GetEmissaoDiaVeiculo(int id, DateTime data)
         {
-            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new ArgumentNullException("Veículo não encontrado! 404");
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
 
             var totalCO2 = await _dataContext.Emissoes
                 .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Date == data.Date)
@@ -62,12 +62,12 @@ namespace Back_End.Services
 
         public async Task<VeiculoModel> GetVeiculoById(int id)
         {
-            return await _dataContext.Veiculos.FirstAsync(v => v.Id == id) ?? throw new ArgumentNullException("Veículo não encontrado! 404");
+            return await _dataContext.Veiculos.FirstAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
         }
 
         public async Task<VeiculoModel> GetVeiculoByPlaca(string placa)
         {
-            return await _dataContext.Veiculos.FirstAsync(v => v.Placa == placa) ?? throw new ArgumentNullException("Veículo não encontrado! 404"); ;
+            return await _dataContext.Veiculos.FirstAsync(v => v.Placa == placa) ?? throw new Exception("Veículo não encontrado! 404"); ;
         }
 
         public async Task UpdateVeiculo(int id, VeiculoPutDTO request)
