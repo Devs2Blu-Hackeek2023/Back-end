@@ -1,6 +1,7 @@
 ﻿using Back_End.Data;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back_End.Services
 {
@@ -15,38 +16,67 @@ namespace Back_End.Services
 
         public async Task CreateRua(RuaModel request)
         {
-            throw new NotImplementedException();
+            var ruaModel = new RuaModel
+            {
+                CEP = request.CEP,
+                Comprimento = request.Comprimento,
+            };
+
+            _dataContext.Ruas.Add(ruaModel);
+            await _dataContext.SaveChangesAsync();
         }
 
 
-        public Task<List<RuaModel>> GetAllRuas()
+        public async Task<List<RuaModel>> GetAllRuas()
         {
-            throw new NotImplementedException();
+            return await _dataContext.Ruas.ToListAsync() ?? throw new ArgumentNullException("Rua não encontrada! 404");
         }
 
-        public Task<double> GetEmissaoAnualRua(int Id)
+        public async Task<double> GetEmissaoAnualRua(int Id)
         {
-            throw new NotImplementedException();
+            var emissoes = await _dataContext.Emissoes
+                .Where(r => r.Id == Id && r.DataInicio.Year == DateTime.Now.Year)
+                .Select(e => e.CO2)
+                .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse ano! 404");
+
+            return emissoes;
         }
 
-        public Task<double> GetEmissaoMesRua(int Id)
+        public async Task<double> GetEmissaoMesRua(int Id)
         {
-            throw new NotImplementedException();
+            var emissoes = await _dataContext.Emissoes
+                 .Where(r => r.Id == Id && r.DataInicio.Month == DateTime.Now.Month)
+                 .Select(e => e.CO2)
+                 .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
+
+            return emissoes;
         }
 
-        public Task<double> GetEmissaoTotalRua(int Id)
+        public async Task<double> GetEmissaoTotalRua(int Id)
         {
-            throw new NotImplementedException();
+            return  _dataContext.Emissoes.Where(r => r.Id == Id).Select(e => e.CO2).Sum() ?? throw new Exception("Não há emissões nessa rua! 404");
         }
 
-        public Task<RuaModel> GetRuaById(int Id)
+        public async Task<RuaModel> GetRuaByCEP(string Cep)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Ruas.FirstOrDefaultAsync(c => c.CEP == Cep) ?? throw new Exception("Cep não encontrado");
         }
 
-        public Task UpdateRua(int Id, RuaModel request)
+        public async Task<RuaModel> GetRuaById(int Id)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Ruas.FirstAsync(r => r.Id == Id) ?? throw new ArgumentNullException("Rua não encontrada! 404");
+        }
+
+        public async Task UpdateRua(int Id, RuaModel request)
+        {
+            var ruaModel = new RuaModel()
+            {
+                CEP = request.CEP,
+                Comprimento = request.Comprimento,
+            };
+
+            _dataContext.Ruas.Update(ruaModel);
+            await _dataContext.SaveChangesAsync();
         }
     }
 }
