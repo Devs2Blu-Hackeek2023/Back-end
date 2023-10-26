@@ -2,7 +2,9 @@ using Back_End.Data;
 using Back_End.Services;
 using Back_End.Services.Camera;
 using Back_End.Services.Interfaces;
+using Back_End.Services.ViaCep;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,12 @@ builder.Services.AddScoped<IRuaService, RuaService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<IEmissaoService, EmissaoService>();
 builder.Services.AddScoped<ICameraService, CameraService>();
+builder.Services.AddScoped<IViaCep, ViaCep>();
+
+builder.Services.AddRefitClient<IIntegracao>().ConfigureHttpClient(c =>
+{
+    c.BaseAddress = new Uri("https://viacep.com.br");
+});
 
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
