@@ -62,7 +62,7 @@ namespace Back_End.Controllers
         {
             try
             {
-                _service.DeleteProprietario(Id);
+                await _service.DeleteProprietario(Id);
                 return Ok("Funcionário deletado com sucesso");
             }catch (Exception ex)
             {
