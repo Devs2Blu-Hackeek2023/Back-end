@@ -3,6 +3,7 @@ using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Camera;
 using Back_End.Services.Interfaces;
+using Back_End.Services.Trafego;
 using Microsoft.EntityFrameworkCore;
 
 namespace Back_End.Services
@@ -10,42 +11,41 @@ namespace Back_End.Services
 	public class EmissaoService : IEmissaoService
 	{
 		private readonly DataContext _context;
+		private readonly ITrafegoService _trafegoService;
 		private readonly ICameraService _cameraService;
-		private static List<VeiculoModel> _veiculosAtuais = new List<VeiculoModel>();
 
-		public EmissaoService(DataContext context, ICameraService cameraService)
+		public EmissaoService(DataContext context, ITrafegoService trafegoService, ICameraService cameraService)
 		{
 			_context = context;
+			_trafegoService = trafegoService;
 			_cameraService = cameraService;
 		}
 
 		public async Task<EmissaoModel> IniciarEmissao()
 		{
-			var veiculo = await _cameraService.SortearVeiculoAsync() ?? throw new Exception("Veículo não encontrado.");
-			var rua = await _cameraService.SortearRuaAsync() ?? throw new Exception("Rua não encontrada.");
-			_veiculosAtuais.Add(veiculo);
+			var veiculo = await _trafegoService.SortearVeiculoAsync() ?? throw new Exception("Veículo não encontrado.");
+			var rua = await _trafegoService.SortearRuaAsync() ?? throw new Exception("Rua não encontrada.");
 
-			DateTime inicio = DateTime.Now;
+			DateTime inicio = _cameraService.SetInicio();
+
 			EmissaoPostDTO post = new EmissaoPostDTO(inicio, veiculo.Id, rua.Id);
+
 			var emissao = await CreateEmissao(post);
+
 			return emissao;
 		}
 
-        public async Task EncerrarEmissao(EmissaoModel emissao)
-        {
-            int tempo = _cameraService.SetTempo(300, 1200);
-            double co2 = CalculoEmissao(emissao.Id);
-            Thread.Sleep(tempo);
-            DateTime fim = DateTime.Now;
-            //DateTime fim = emissao.DataInicio.AddSeconds(segundos);
+		public async Task EncerrarEmissao(EmissaoModel emissao)
+		{
+			double co2 = CalculoEmissao(emissao.Id);
+			DateTime fim = _cameraService.SetFinal();
 
-            EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
+			EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
 
-            await UpdateEmissao(emissao.Id, put);
-            _veiculosAtuais.Remove(emissao.Veiculo);
-        }
+			await UpdateEmissao(emissao.Id, put);
+		}
 
-        public async Task Emissao()
+		public async Task Emissao()
 		{
 			var emissao = await IniciarEmissao();
 			await EncerrarEmissao(emissao);
