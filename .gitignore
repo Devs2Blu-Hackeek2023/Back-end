@@ -397,6 +397,11 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Migration folder
+Migrations/
 
 # Env file
 *.env
+
+# appsetting file
+appsettings.json

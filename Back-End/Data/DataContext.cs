@@ -43,6 +43,7 @@ namespace Back_End.Data
                 .HasForeignKey(p => p.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+          
         }
     }
 }

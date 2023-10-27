@@ -1,5 +1,6 @@
 ﻿using Back_End.Model;
 using Back_End.Services.Interfaces;
+using BCrypt.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace Back_End.Controllers
         {
             try
             {
+                request.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.PasswordHash);
                 await _usuararioService.CreateUsuario(request);
                 return Ok("Usuário criado");
             }catch (Exception ex)
@@ -29,7 +31,7 @@ namespace Back_End.Controllers
             }
         } 
 
-
+         
          
     }
 }
