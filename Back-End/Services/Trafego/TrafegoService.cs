@@ -36,14 +36,14 @@ namespace Back_End.Services.Trafego
 			{
 				EmissaoPostDTO emissao = new EmissaoPostDTO()
 				{
-					Id = 0,
-					DataInicio = DateTime.Now,
-					VeiculoId = 0,
-					RuaId = 0
+					Id = new int(),
+					DataInicio = new DateTime(),
+					VeiculoId = new int(),
+					RuaId = new int()
 				};
 
 				string emissaoJSON = JsonConvert.SerializeObject(emissao);
-				var content = new StringContent(emissaoJSON, Encoding.UTF8, "application/json");
+				StringContent content = new(emissaoJSON, Encoding.UTF8, "application/json");
 				HttpResponseMessage response = await _httpClient.PostAsync($"{_apiURL}/emissao/ia", content);
 
 				if (response.IsSuccessStatusCode)
