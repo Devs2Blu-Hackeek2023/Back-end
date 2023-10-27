@@ -37,7 +37,7 @@ namespace Back_End.Services
 
 		public async Task EncerrarEmissao(EmissaoModel emissao)
 		{
-			double co2 = CalculoEmissao(emissao.Id);
+			double co2 = await CalculoEmissao(emissao.Id);
 			DateTime fim = _cameraService.SetFinal();
 
 			EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
@@ -48,34 +48,34 @@ namespace Back_End.Services
 		public async Task Emissao()
 		{
 			var emissao = await IniciarEmissao();
-			Thread.Sleep(60000);
 			await EncerrarEmissao(emissao);
 		}
 
-		public double CalculoEmissao(int id)
-		{
-			var emissao = _context.Emissoes.FirstOrDefault(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
-			var veiculo = _context.Veiculos.FirstOrDefault(v => v.Id == emissao.VeiculoId) ?? throw new Exception("Veículo não encontrado.");
-			var rua = _context.Ruas.FirstOrDefault(r => r.Id == emissao.RuaId) ?? throw new Exception("Rua não encontrada.");
-			var tipoCombustivel = veiculo.Combustivel;
-			var kmRua = rua.Comprimento;
-			var kmL = veiculo.KmL;
-			double constante = 0;
+        public async Task<double> CalculoEmissao(int id)
+        {
+            var emissao = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
+            var veiculo = await _context.Veiculos.FirstOrDefaultAsync(v => v.Id == emissao.VeiculoId) ?? throw new Exception("Veículo não encontrado.");
+            var rua = await _context.Ruas.FirstOrDefaultAsync(r => r.Id == emissao.RuaId) ?? throw new Exception("Rua não encontrada.");
+            var tipoCombustivel = veiculo.Combustivel;
+            var kmRua = rua.Comprimento;
+            var kmL = veiculo.KmL;
+            double constante = 0;
 
-			if (tipoCombustivel.ToLower() == "gasolina") constante = 2.39;
-			else if (tipoCombustivel.ToLower() == "diesel") constante = 2.64;
-			else if (tipoCombustivel.ToLower() == "gás" || tipoCombustivel.ToLower() == "gas" || tipoCombustivel.ToLower() == "gnv") constante = 1.66;
-			else if (tipoCombustivel.ToLower() == "álcool" || tipoCombustivel.ToLower() == "alcool" || tipoCombustivel.ToLower() == "etanol") constante = 0.50;
-			else throw new Exception("Tipo de combustível inexistente.");
+            if (tipoCombustivel.ToLower() == "gasolina") constante = 2.39;
+            else if (tipoCombustivel.ToLower() == "diesel") constante = 2.64;
+            else if (tipoCombustivel.ToLower() == "gás" || tipoCombustivel.ToLower() == "gas" || tipoCombustivel.ToLower() == "gnv") constante = 1.66;
+            else if (tipoCombustivel.ToLower() == "álcool" || tipoCombustivel.ToLower() == "alcool" || tipoCombustivel.ToLower() == "etanol") constante = 0.50;
+            else throw new Exception("Tipo de combustível inexistente.");
 
-			double litros = kmRua / kmL;
+            double litros = kmRua / kmL;
 
-			double resultado = litros * constante;
+            double resultado = litros * constante;
 
-			return resultado;
-		}
+            return resultado;
+        }
 
-		public async Task<EmissaoModel> CreateEmissao(EmissaoPostDTO request)
+
+        public async Task<EmissaoModel> CreateEmissao(EmissaoPostDTO request)
 		{
 			EmissaoModel model = new EmissaoModel()
 			{
@@ -146,7 +146,6 @@ namespace Back_End.Services
 			var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
 			model.DataFim = request.DataFim;
 			model.CO2 = request.CO2;
-			Console.WriteLine("OIIIII +++++++++++++++++++++++++++++");
 			_context.SaveChanges();
 		}
 	}
