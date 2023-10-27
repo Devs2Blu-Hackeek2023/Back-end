@@ -6,7 +6,7 @@ using Back_End.Services.Login;
 using Back_End.Services.Trafego;
 using Back_End.Services.ViaCep;
 using Microsoft.EntityFrameworkCore;
-using Refit;
+// using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,7 @@ builder.Services.AddScoped<ICameraService, CameraService>();
 builder.Services.AddScoped<ITrafegoService, TrafegoService>();
 builder.Services.AddScoped<IViaCep, ViaCep>();
 
-builder.Services.AddRefitClient<IIntegracao>().ConfigureHttpClient(c => { c.BaseAddress = new Uri("https://viacep.com.br"); });
+// builder.Services.AddRefitClient<IIntegracao>().ConfigureHttpClient(c => { c.BaseAddress = new Uri("https://viacep.com.br"); });
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 	policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
