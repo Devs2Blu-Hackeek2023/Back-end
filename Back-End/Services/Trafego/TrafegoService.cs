@@ -56,12 +56,13 @@ namespace Back_End.Services.Trafego
 			}
 		}
 
-		private void SetRandomIntervalo(int minMiliSecs, int maxMiliSecs) { _timer.Interval = _random.Next(minMiliSecs * 1000, maxMiliSecs * 1000); }
+		private void SetRandomIntervalo(int minMiliSecs, int maxMiliSecs) { _timer.Interval = _random.Next(minMiliSecs * 500, maxMiliSecs * 500); }
 
 		private void IniciarTimer()
 		{
 			_timer.Elapsed += async (sender, e) => await IniciarTrafego();
 			SetRandomIntervalo(10, 150);
+			_timer.Elapsed += (sender, e) => IniciarTrafego();
 			_timer.AutoReset = true;
 			_timer.Start();
 		}
