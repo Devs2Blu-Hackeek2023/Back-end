@@ -33,16 +33,17 @@ namespace Back_End.Services
 
 		public async Task EncerrarEmissao(EmissaoModel emissao)
 		{
-			int segundos = _cameraService.SetTempo(300, 1200);
-			double co2 = CalculoEmissao(emissao.Id);
+            int tempo = _cameraService.SetTempo(300, 1200);
+            double co2 = CalculoEmissao(emissao.Id);
+            Thread.Sleep(tempo);
+            DateTime fim = DateTime.Now;
+            //DateTime fim = emissao.DataInicio.AddSeconds(segundos);
 
-			DateTime fim = emissao.DataInicio.AddSeconds(segundos);
+            EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
 
-			EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
-
-			await UpdateEmissao(emissao.Id, put);
-			_veiculosAtuais.Remove(emissao.Veiculo);
-		}
+            await UpdateEmissao(emissao.Id, put);
+            _veiculosAtuais.Remove(emissao.Veiculo);
+        }
 
 		public async Task Emissao()
 		{

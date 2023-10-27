@@ -32,30 +32,30 @@ namespace Back_End.Services.Trafego
 
 		public async Task IniciarTrafego()
 		{
-			try
-			{
-				EmissaoPostDTO emissao = new EmissaoPostDTO()
-				{
-					Id = 0,
-					DataInicio = DateTime.Now,
-					VeiculoId = 0,
-					RuaId = 0
-				};
+            try
+            {
+                EmissaoPostDTO emissao = new EmissaoPostDTO()
+                {
+                    Id = new int(),
+                    DataInicio = new DateTime(),
+                    VeiculoId = new int(),
+                    RuaId = new int()
+                };
 
-				string emissaoJSON = JsonConvert.SerializeObject(emissao);
-				var content = new StringContent(emissaoJSON, Encoding.UTF8, "application/json");
-				HttpResponseMessage response = await _httpClient.PostAsync($"{_apiURL}/emissao/ia", content);
+                string emissaoJSON = JsonConvert.SerializeObject(emissao);
+                StringContent content = new(emissaoJSON, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PostAsync($"{_apiURL}/emissao/ia", content);
 
-				if (response.IsSuccessStatusCode)
-				{
-					string responseContent = await response.Content.ReadAsStringAsync();
-				}
-				else throw new Exception(response.StatusCode.ToString());
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(ex.Message);
-			}
-		}
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                }
+                else throw new Exception(response.StatusCode.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 	}
 }
