@@ -20,12 +20,12 @@ namespace Back_End.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateVeiculo(VeiculoModel request)
+        public async Task<ActionResult> CreateVeiculo(VeiculoPostDTO request)
         {
             try
             {
                 await _veiculoService.CreateVeiculo(request);
-                return Ok();
+                return Ok(request);
             }
             catch (Exception e)
             {
@@ -33,13 +33,13 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Id")]
         public async Task<ActionResult> DeleteVeiculo(int id)
         {
             try
             {
                 await _veiculoService.DeleteVeiculo(id);
-                return Ok();
+                return Ok("Veículo deletado com sucesso!");
             }
             catch (Exception e)
             {
@@ -61,7 +61,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("/veiculo/{id}/emissao")]
+        [HttpGet("/veiculo/{Id}/Emissao")]
         public async Task<ActionResult<double>> GetEmissaoDiaByVeiculoId(int id, DateTime data)
         {
             try
@@ -75,13 +75,13 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<VeiculoModel>> GetVeiculoById(int id)
+        [HttpGet("Id")]
+        public async Task<ActionResult<VeiculoModel>> GetVeiculoById(int Id)
         {
             try
             {
 
-                var result = await _veiculoService.GetVeiculoById(id);
+                var result = await _veiculoService.GetVeiculoById(Id);
                 return Ok(result);
             }
             catch (Exception e)
@@ -90,7 +90,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("{placa}")]
+        [HttpGet("Placa")]
         public async Task<ActionResult<VeiculoModel>> GetVeiculoByPlaca(string placa)
         {
             try
@@ -105,13 +105,13 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Id")]
         public async Task<ActionResult> UpdateVeiculo(int id, VeiculoPutDTO request)
         {
             try
             {
                 await _veiculoService.UpdateVeiculo(id, request);
-                return Ok();
+                return Ok("Cadastro alterado com sucesso!");
             }
             catch (Exception e)
             {

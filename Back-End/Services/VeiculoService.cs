@@ -4,6 +4,7 @@ using Back_End.Model;
 using Back_End.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace Back_End.Services
 {
@@ -15,24 +16,26 @@ namespace Back_End.Services
         {
             _dataContext = dataContext;
         }
-        public async Task CreateVeiculo(VeiculoModel request)
+        public async Task CreateVeiculo(VeiculoPostDTO request)
         {
-            var veiculoModel = new VeiculoModel
-            {
-                Placa = request.Placa,
-                Modelo = request.Modelo,
-                Ano = request.Ano,
-                Marca = request.Marca,
-                Categoria = request.Categoria,
-                Motor = request.Motor,
-                Combustivel = request.Combustivel,
-                KmL = request.KmL,
-                ProprietarioId = request.ProprietarioId,
-                Proprietario = request.Proprietario,
-                Modificacoes = request.Modificacoes 
-            };
 
-            _dataContext.Veiculos.Add(veiculoModel);
+            //ProprietarioModel prop = new ProprietarioModel();
+            VeiculoModel vei = new VeiculoModel();
+            vei.Placa = request.Placa;
+            vei.Modelo = request.Modelo;
+
+            vei.Ano = request.Ano;
+            vei.Marca = request.Marca;
+            vei.Categoria = request.Categoria;
+            vei.Motor = request.Motor;
+            vei.Combustivel = request.Combustivel;
+            vei.KmL = request.KmL;
+            vei.Modificacoes = request.Modificacoes;
+            vei.ProprietarioId = request.ProprietarioId;
+            vei.Proprietario = await _dataContext.Proprietarios.FirstOrDefaultAsync(i => i.Id == request.ProprietarioId) ?? throw new Exception("Proprietário não existe");
+
+
+            _dataContext.Veiculos.Add(vei);
             await _dataContext.SaveChangesAsync();
         }
 
@@ -41,16 +44,17 @@ namespace Back_End.Services
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
             _dataContext.Veiculos.Remove(veiculo);
             await _dataContext.SaveChangesAsync();
+            
         }
 
         public async Task<List<VeiculoModel>> GetAllVeiculos()
         {
-            return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado! 404");
+            return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado!");
         }
 
         public async Task<double> GetEmissaoDiaVeiculo(int id, DateTime data)
         {
-            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado!");
 
             var totalCO2 = await _dataContext.Emissoes
                 .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Date == data.Date)
@@ -60,28 +64,36 @@ namespace Back_End.Services
             return totalCO2;
         }
 
-        public async Task<VeiculoModel> GetVeiculoById(int id)
+        public async Task<VeiculoModel> GetVeiculoById(int Id)
         {
-            return await _dataContext.Veiculos.FirstAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
+            var veiculo = await _dataContext.Veiculos.FindAsync(Id);
+            if (veiculo is null) throw new Exception("Veículo não encontrado");
+            else return veiculo;
+            
         }
 
         public async Task<VeiculoModel> GetVeiculoByPlaca(string placa)
         {
-            return await _dataContext.Veiculos.FirstAsync(v => v.Placa == placa) ?? throw new Exception("Veículo não encontrado! 404"); ;
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Placa == placa);
+            if (veiculo is null) throw new Exception("Veículo não encontrado");
+            else return veiculo;
+            
         }
 
         public async Task UpdateVeiculo(int id, VeiculoPutDTO request)
         {
-            var veiculoModel = new VeiculoModel
+            var vei = await _dataContext.Veiculos.FindAsync(id);
+            if (vei is null) throw new Exception("Veículo não encontrado");
+            else
             {
-                Placa = request.Placa,
-                Combustivel = request.Combustivel,
-                KmL = request.KmL,
-                ProprietarioId = request.ProprietarioId,
-                Proprietario = request.Proprietario,
-                Modificacoes = request.Modificacoes
-            };
-
+                vei.Placa = request.Placa;
+                vei.Combustivel = request.Combustivel;
+                vei.KmL = request.KmL;
+                vei.ProprietarioId = request.ProprietarioId;
+                vei.Proprietario = request.Proprietario;
+                vei.Modificacoes = request.Modificacoes;
+            }
+            
             await _dataContext.SaveChangesAsync();
         }
     }

@@ -3,6 +3,8 @@ using Back_End.Services;
 using Back_End.Services.Camera;
 using Back_End.Services.Interfaces;
 using Back_End.Services.Login;
+using Back_End.Services.Trafego;
+using Back_End.Services.ViaCep;
 using Microsoft.EntityFrameworkCore;
 using Refit;
 using ViaCep;
@@ -35,7 +37,7 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<IEmissaoService, EmissaoService>();
 builder.Services.AddScoped<ICameraService, CameraService>();
-
+builder.Services.AddScoped<ITrafegoService,TrafegoService>();
 
 
 builder.Services.AddCors(options =>
