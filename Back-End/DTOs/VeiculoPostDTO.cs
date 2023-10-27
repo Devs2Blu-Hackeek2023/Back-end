@@ -14,6 +14,7 @@ namespace Back_End.DTOs
         public double KmL { get; set; }
         public string Modificacoes { get; set; } = string.Empty;
         public int ProprietarioId { get; set; }
+        public ProprietarioDTO Proprietario { get; set; }
         
     }
 }
