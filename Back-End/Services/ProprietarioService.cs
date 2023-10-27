@@ -22,6 +22,9 @@ namespace Back_End.Services
                 prop.CPF = request.CPF;
                 prop.NomeCompleto = request.NomeCompleto;
                 prop.UsuarioId = request.UsuarioId;
+                if(!(await _data.Proprietarios.FirstOrDefaultAsync(i => i.UsuarioId == request.UsuarioId) is null)){
+                throw new Exception("Esse proprietário já possui uma conta.");
+            }
                 prop.Usuario = await _data.Usuarios.FirstOrDefaultAsync(i => i.Id == request.UsuarioId) ?? throw new Exception("Usuário não existe");
 
                 

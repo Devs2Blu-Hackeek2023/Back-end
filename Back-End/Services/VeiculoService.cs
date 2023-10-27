@@ -18,6 +18,7 @@ namespace Back_End.Services
         }
         public async Task CreateVeiculo(VeiculoPostDTO request)
         {
+
             //ProprietarioModel prop = new ProprietarioModel();
             VeiculoModel vei = new VeiculoModel();
             vei.Placa = request.Placa;
@@ -32,6 +33,7 @@ namespace Back_End.Services
             vei.Modificacoes = request.Modificacoes;
             vei.ProprietarioId = request.ProprietarioId;
             vei.Proprietario = await _dataContext.Proprietarios.FirstOrDefaultAsync(i => i.Id == request.ProprietarioId) ?? throw new Exception("Proprietário não existe");
+
 
             _dataContext.Veiculos.Add(vei);
             await _dataContext.SaveChangesAsync();
