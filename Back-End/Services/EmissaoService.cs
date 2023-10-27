@@ -48,6 +48,7 @@ namespace Back_End.Services
 		public async Task Emissao()
 		{
 			var emissao = await IniciarEmissao();
+			Thread.Sleep(60000);
 			await EncerrarEmissao(emissao);
 		}
 
@@ -145,6 +146,7 @@ namespace Back_End.Services
 			var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
 			model.DataFim = request.DataFim;
 			model.CO2 = request.CO2;
+			Console.WriteLine("OIIIII +++++++++++++++++++++++++++++");
 			_context.SaveChanges();
 		}
 	}
