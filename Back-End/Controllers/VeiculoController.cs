@@ -90,7 +90,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("Placa")]
+        [HttpGet("Placa/{placa}")]
         public async Task<ActionResult<VeiculoModel>> GetVeiculoByPlaca(string placa)
         {
             try
