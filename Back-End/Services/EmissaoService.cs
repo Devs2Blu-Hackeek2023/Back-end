@@ -33,14 +33,12 @@ namespace Back_End.Services
 
 		public async Task EncerrarEmissao(EmissaoModel emissao)
 		{
-            int tempo = _cameraService.SetTempo(300, 1200);
-            double co2 = CalculoEmissao(emissao.Id);
-            Thread.Sleep(tempo);
-            DateTime fim = DateTime.Now;
-            //DateTime fim = emissao.DataInicio.AddSeconds(segundos);
 
-            EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
-
+			int tempo = _cameraService.SetTempo(300, 1200);
+			double co2 = CalculoEmissao(emissao.Id);
+			Thread.Sleep(tempo);
+			DateTime fim = DateTime.Now;
+			//DateTime fim = emissao.DataInicio.AddSeconds(segundos);
             await UpdateEmissao(emissao.Id, put);
             _veiculosAtuais.Remove(emissao.Veiculo);
         }
@@ -53,9 +51,9 @@ namespace Back_End.Services
 
 		public double CalculoEmissao(int id)
 		{
-			var emissao = _context.Emissoes.FirstOrDefault(e => e.Id == id) ?? throw new Exception("Emissão não encontrada! 404");
-			var veiculo = _context.Veiculos.FirstOrDefault(v => v.Id == emissao.VeiculoId) ?? throw new Exception("Veiculo não encontrado! 404");
-			var rua = _context.Ruas.FirstOrDefault(r => r.Id == emissao.RuaId) ?? throw new Exception("Rua não encontrada! 404");
+			var emissao = _context.Emissoes.FirstOrDefault(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
+			var veiculo = _context.Veiculos.FirstOrDefault(v => v.Id == emissao.VeiculoId) ?? throw new Exception("Veículo não encontrado.");
+			var rua = _context.Ruas.FirstOrDefault(r => r.Id == emissao.RuaId) ?? throw new Exception("Rua não encontrada.");
 			var tipoCombustivel = veiculo.Combustivel;
 			var kmRua = rua.Comprimento;
 			var kmL = veiculo.KmL;
@@ -90,19 +88,19 @@ namespace Back_End.Services
 
 		public async Task DeleteEmissao(int id)
 		{
-			var request = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada! 404");
+			var request = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
 			_context.Emissoes.Remove(request);
 			await _context.SaveChangesAsync();
 		}
 
 		public async Task<List<EmissaoModel>> GetAllEmissao()
 		{
-			return await _context.Emissoes.ToListAsync() ?? throw new Exception("Emissão não encontrada! 404");
+			return await _context.Emissoes.ToListAsync() ?? throw new Exception("Emissão não encontrada.");
 		}
 
 		public async Task<EmissaoModel> GetEmissaoById(int id)
 		{
-			return await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada! 404");
+			return await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
 		}
 
 		public double? GetEmissaoTotal()
@@ -112,37 +110,37 @@ namespace Back_End.Services
 
 		public double? GetEmissaoDeTalAno(int ano)
 		{
-			return _context.Emissoes.Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não tem emissões desse ano! 404");
+			return _context.Emissoes.Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new Exception($"Não há emissões registradas no ano {ano}.");
 		}
 
 		public double? GetEmissaoDeTalMes(int mes, int ano)
 		{
-			return _context.Emissoes.Where(e => e.DataInicio.Month == mes).Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não tem emissões desse mês! 404");
+			return _context.Emissoes.Where(e => e.DataInicio.Month == mes).Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new Exception($"Não há emissões registradas no mês de {mes}/{ano}.");
 		}
 
 		public double? GetEmissaoDeTalDia(int dia, int mes, int ano)
 		{
-			return _context.Emissoes.Where(e => e.DataInicio.Day == dia).Where(e => e.DataInicio.Month == mes).Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não tem emissões desse mês! 404");
+			return _context.Emissoes.Where(e => e.DataInicio.Day == dia).Where(e => e.DataInicio.Month == mes).Where(e => e.DataInicio.Year == ano).Select(e => e.CO2).ToList().Sum() ?? throw new Exception($"Não há emissões registradas no dia {dia}/{mes}/{ano}.");
 		}
 
 		public double? GetEmissaoDoUltimoAno()
 		{
-			return _context.Emissoes.Where(e => (DateTime.Now.Year - e.DataInicio.Year) <= 0).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não tem emissões desse ano! 404");
+			return _context.Emissoes.Where(e => (DateTime.Now.Year - e.DataInicio.Year) <= 0).Select(e => e.CO2).ToList().Sum() ?? throw new Exception($"Não há emissões registradas no último ano.");
 		}
 
 		public double? GetEmissaoDoUltimoDia()
 		{
-			return _context.Emissoes.Where(e => ((DateTime.Now.Day - e.DataInicio.Day) <= 0) && ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Day - e.DataInicio.Day) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não tem emissões desse dia! 404");
+			return _context.Emissoes.Where(e => ((DateTime.Now.Day - e.DataInicio.Day) <= 0) && ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Day - e.DataInicio.Day) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não há emissões registradas no último dia.");
 		}
 
 		public double? GetEmissaoDoUltimoMes()
 		{
-			return _context.Emissoes.Where(e => ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Year - e.DataInicio.Year) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não tem emissões desse mês! 404");
+			return _context.Emissoes.Where(e => ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Year - e.DataInicio.Year) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não há emissões registradas no último mês.");
 		}
 
 		public async Task UpdateEmissao(int id, EmissaoPutDTO request)
 		{
-			var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada! 404");
+			var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
 			model.DataFim = request.DataFim;
 			model.CO2 = request.CO2;
 			_context.SaveChanges();
