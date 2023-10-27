@@ -18,7 +18,6 @@ namespace Back_End.Services
         }
         public async Task CreateVeiculo(VeiculoPostDTO request)
         {
-
             //ProprietarioModel prop = new ProprietarioModel();
             VeiculoModel vei = new VeiculoModel();
             vei.Placa = request.Placa;
@@ -82,18 +81,28 @@ namespace Back_End.Services
 
         public async Task UpdateVeiculo(int id, VeiculoPutDTO request)
         {
-            var vei = await _dataContext.Veiculos.FindAsync(id);
-            if (vei is null) throw new Exception("Veículo não encontrado");
-            else
+            var vei = await _dataContext.Veiculos.Include(v => v.Proprietario).FirstOrDefaultAsync(v => v.Id == id);
+
+            if (vei is null)
             {
-                vei.Placa = request.Placa;
-                vei.Combustivel = request.Combustivel;
-                vei.KmL = request.KmL;
-                vei.ProprietarioId = request.ProprietarioId;
-                vei.Proprietario = request.Proprietario;
-                vei.Modificacoes = request.Modificacoes;
+                throw new Exception("Veículo não encontrado");
             }
+
+            vei.Placa = request.Placa;
+            vei.Combustivel = request.Combustivel;
+            vei.KmL = request.KmL;
+            vei.Modificacoes = request.Modificacoes;
+            vei.ProprietarioId = request.ProprietarioId;
+
             
+
+            vei.Proprietario.NomeCompleto = request.Proprietario.NomeCompleto;
+            vei.Proprietario.CPF = request.Proprietario.CPF;
+            vei.Proprietario.CNH = request.Proprietario.CNH;
+            vei.Proprietario.UsuarioId = request.Proprietario.UsuarioId;
+
+
+
             await _dataContext.SaveChangesAsync();
         }
     }
