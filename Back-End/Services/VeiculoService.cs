@@ -93,15 +93,7 @@ namespace Back_End.Services
             vei.KmL = request.KmL;
             vei.Modificacoes = request.Modificacoes;
             vei.ProprietarioId = request.ProprietarioId;
-
-            
-
-            vei.Proprietario.NomeCompleto = request.Proprietario.NomeCompleto;
-            vei.Proprietario.CPF = request.Proprietario.CPF;
-            vei.Proprietario.CNH = request.Proprietario.CNH;
-            vei.Proprietario.UsuarioId = request.Proprietario.UsuarioId;
-
-
+            vei.Proprietario = _dataContext.Proprietarios.FirstOrDefault(p => p.Id == request.ProprietarioId) ?? throw new Exception("Esse proprietario não existe!");
 
             await _dataContext.SaveChangesAsync();
         }
