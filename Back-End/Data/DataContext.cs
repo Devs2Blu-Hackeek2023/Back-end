@@ -43,6 +43,9 @@ namespace Back_End.Data
                 .HasForeignKey(p => p.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<UsuarioModel>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
           
         }
     }

@@ -25,7 +25,7 @@ namespace Back_End.Services.Trafego
 		private void IniciarTimer()
 		{
 			_timer.Elapsed += (sender, e) => IniciarTrafego();
-			SetRandomIntervalo(10, 300);
+			SetRandomIntervalo(150, 300);
 			_timer.AutoReset = true;
 			_timer.Start();
 		}

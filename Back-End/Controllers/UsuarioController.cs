@@ -29,9 +29,20 @@ namespace Back_End.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        } 
+        }
 
-         
+        [HttpPost("Id")]
+        public async Task<ActionResult> RedefinedPassword(int Id, string password, string newPassword, string confirmationPassword)
+        {
+            try
+            {
+                await _usuararioService.UpdateSenha(Id, password, newPassword, confirmationPassword);
+                return Ok("Senha redefinida com sucesso");
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
          
     }
 }
