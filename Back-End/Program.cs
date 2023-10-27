@@ -27,14 +27,10 @@ builder.Services.AddScoped<IEmissaoService, EmissaoService>();
 builder.Services.AddScoped<ICameraService, CameraService>();
 builder.Services.AddScoped<ITrafegoService, TrafegoService>();
 
-builder.Services.AddScoped<IViaCep, ViaCep>();
+// builder.Services.AddScoped<IViaCep, ViaCep>();
 // builder.Services.AddRefitClient<IIntegracao>().ConfigureHttpClient(c => { c.BaseAddress = new Uri("https://viacep.com.br"); });
-builder.Services.AddHttpClient<IViaCepClient, ViaCepClient>(client => { client.BaseAddress = new Uri("https://viacep.com.br/"); });
-
+// builder.Services.AddHttpClient<IViaCepClient, ViaCepClient>(client => { client.BaseAddress = new Uri("https://viacep.com.br/"); });
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
-
-// builder.Services.AddRefitClient<IIntegracao>().ConfigureHttpClient(c => { c.BaseAddress = new Uri("https://viacep.com.br"); });
-
 
 var app = builder.Build();
 
