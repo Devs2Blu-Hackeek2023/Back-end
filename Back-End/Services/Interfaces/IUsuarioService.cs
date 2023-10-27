@@ -4,7 +4,7 @@ namespace Back_End.Services.Interfaces
 {
     public interface IUsuarioService
     {
-        Task UpdateSenha(int id, string request); 
+        Task UpdateSenha(int id, string request, string newSenha, string confirmationSenha); 
         
         Task CreateUsuario(UsuarioModel model);
 

@@ -4,6 +4,7 @@ namespace Back_End.DTOs
 {
     public class VeiculoPostDTO
     {
+        public int Id { get; set; }
         public string Placa { get; set; } = string.Empty;
         public string Modelo { get; set; } = string.Empty;
         public int Ano { get; set; }
@@ -14,7 +15,6 @@ namespace Back_End.DTOs
         public double KmL { get; set; }
         public string Modificacoes { get; set; } = string.Empty;
         public int ProprietarioId { get; set; }
-        public ProprietarioDTO Proprietario { get; set; }
         
     }
 }
