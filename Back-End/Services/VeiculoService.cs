@@ -15,7 +15,7 @@ namespace Back_End.Services
         {
             _dataContext = dataContext;
         }
-        public async Task CreateVeiculo(VeiculoModel request)
+        public async Task CreateVeiculo(VeiculoPostDTO request)
         {
             var veiculoModel = new VeiculoModel
             {
@@ -28,7 +28,7 @@ namespace Back_End.Services
                 Combustivel = request.Combustivel,
                 KmL = request.KmL,
                 ProprietarioId = request.ProprietarioId,
-                Proprietario = request.Proprietario,
+                Proprietario = _dataContext.Proprietarios.Find(request.ProprietarioId) ?? throw new Exception("Proprietário não encontrado"),
                 Modificacoes = request.Modificacoes 
             };
 

@@ -20,7 +20,7 @@ namespace Back_End.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateVeiculo(VeiculoModel request)
+        public async Task<ActionResult> CreateVeiculo(VeiculoPostDTO request)
         {
             try
             {
