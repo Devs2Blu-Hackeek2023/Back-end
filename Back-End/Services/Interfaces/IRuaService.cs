@@ -1,11 +1,12 @@
-﻿using Back_End.Model;
+﻿using Back_End.DTOs;
+using Back_End.Model;
 
 namespace Back_End.Services.Interfaces
 {
     public interface IRuaService
     {
         Task<RuaModel> GetRuaById(int Id);
-        Task<RuaModel> GetRuaByCEP(string Cep);
+        Task<RuaGetDTO> GetRuaByCEP(string Cep);
         Task<List<RuaModel>> GetAllRuas();
         Task CreateRua(RuaModel request);
         Task UpdateRua(int Id, RuaModel request);

@@ -1,4 +1,5 @@
-﻿using Back_End.Model;
+﻿using Back_End.DTOs;
+using Back_End.Model;
 using Back_End.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,8 +46,8 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("{CEP}")]
-        public async Task<ActionResult<RuaModel>> GetRuaByCEP(string CEP)
+        [HttpGet("cep/{CEP}")]
+        public async Task<ActionResult<RuaGetDTO>> GetRuaByCEP(string CEP)
         {
             try
             {
@@ -104,7 +105,7 @@ namespace Back_End.Controllers
         {
             try
             {
-                _ruaService.CreateRua(rua);
+                await _ruaService.CreateRua(rua);
                 return Ok("Rua criada com sucesso");
             }
             catch (Exception ex)
