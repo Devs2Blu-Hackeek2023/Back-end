@@ -16,10 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DataContext>(options =>
-{
-	options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineConnection"));
-});
+builder.Services.AddDbContext<DataContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineConnection")); });
 
 builder.Services.AddScoped<IProprietarioService, ProprietarioService>();
 builder.Services.AddScoped<IRuaService, RuaService>();
@@ -33,9 +30,8 @@ builder.Services.AddScoped<IViaCep, ViaCep>();
 
 builder.Services.AddRefitClient<IIntegracao>().ConfigureHttpClient(c => { c.BaseAddress = new Uri("https://viacep.com.br"); });
 
-builder.Services.AddCors(options =>
-		options.AddDefaultPolicy(policy =>
-				policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
+	policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 var app = builder.Build();
 

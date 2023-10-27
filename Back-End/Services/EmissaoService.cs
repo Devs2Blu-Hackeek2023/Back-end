@@ -27,11 +27,11 @@ namespace Back_End.Services
 			var rua = await _trafegoService.SortearRuaAsync() ?? throw new Exception("Rua não encontrada.");
 
 			DateTime inicio = _cameraService.SetInicio();
-			
+
 			EmissaoPostDTO post = new EmissaoPostDTO(inicio, veiculo.Id, rua.Id);
-			
+
 			var emissao = await CreateEmissao(post);
-			
+
 			return emissao;
 		}
 
