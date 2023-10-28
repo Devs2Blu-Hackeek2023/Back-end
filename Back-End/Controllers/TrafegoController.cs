@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class TrafegoController : ControllerBase
 	{
