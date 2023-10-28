@@ -1,53 +1,101 @@
-﻿using Back_End.Model;
+﻿using Back_End.Data;
+using Back_End.DTOs;
+using Back_End.Model;
 using Back_End.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace Back_End.Services
 {
     public class VeiculoService : IVeiculoService
     {
-        public Task CreateVeiculo(VeiculoModel request)
+        private readonly DataContext _dataContext;
+
+        public VeiculoService(DataContext dataContext)
         {
-            throw new NotImplementedException();
+            _dataContext = dataContext;
+        }
+        public async Task CreateVeiculo(VeiculoPostDTO request)
+        {
+            //ProprietarioModel prop = new ProprietarioModel();
+            VeiculoModel vei = new VeiculoModel();
+            vei.Placa = request.Placa;
+            vei.Modelo = request.Modelo;
+
+            vei.Ano = request.Ano;
+            vei.Marca = request.Marca;
+            vei.Categoria = request.Categoria;
+            vei.Motor = request.Motor;
+            vei.Combustivel = request.Combustivel;
+            vei.KmL = request.KmL;
+            vei.Modificacoes = request.Modificacoes;
+            vei.ProprietarioId = request.ProprietarioId;
+            vei.Proprietario = await _dataContext.Proprietarios.FirstOrDefaultAsync(i => i.Id == request.ProprietarioId) ?? throw new Exception("Proprietário não existe");
+
+
+            _dataContext.Veiculos.Add(vei);
+            await _dataContext.SaveChangesAsync();
         }
 
-        public Task DeleteVeiculo(int id)
+        public async Task DeleteVeiculo(int id)
         {
-            throw new NotImplementedException();
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
+            _dataContext.Veiculos.Remove(veiculo);
+            await _dataContext.SaveChangesAsync();
+            
         }
 
-        public Task<List<VeiculoModel>> GetAllVeiculos()
+        public async Task<List<VeiculoModel>> GetAllVeiculos()
         {
-            throw new NotImplementedException();
+            return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado!");
         }
 
-        public Task<double> GetEmissaoAnualVeiculo(int id)
+        public async Task<double> GetEmissaoDiaVeiculo(int id, DateTime data)
         {
-            throw new NotImplementedException();
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado!");
+
+            var totalCO2 = await _dataContext.Emissoes
+                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Date == data.Date)
+                .Select(emissao => emissao.CO2 ?? 0.0)
+                .SumAsync();
+
+            return totalCO2;
         }
 
-        public Task<double> GetEmissaoMesVeiculo(int id)
+        public async Task<VeiculoModel> GetVeiculoById(int Id)
         {
-            throw new NotImplementedException();
+            var veiculo = await _dataContext.Veiculos.FindAsync(Id);
+            if (veiculo is null) throw new Exception("Veículo não encontrado");
+            else return veiculo;
+            
         }
 
-        public Task<double> GetEmissaoTotalVeiculo(int id)
+        public async Task<VeiculoModel> GetVeiculoByPlaca(string placa)
         {
-            throw new NotImplementedException();
+            var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Placa == placa);
+            if (veiculo is null) throw new Exception("Veículo não encontrado");
+            else return veiculo;
+            
         }
 
-        public Task<VeiculoModel> GetVeiculoById(int id)
+        public async Task UpdateVeiculo(int id, VeiculoPutDTO request)
         {
-            throw new NotImplementedException();
-        }
+            var vei = await _dataContext.Veiculos.Include(v => v.Proprietario).FirstOrDefaultAsync(v => v.Id == id);
 
-        public Task<VeiculoModel> GetVeiculoByPlaca(string placa)
-        {
-            throw new NotImplementedException();
-        }
+            if (vei is null)
+            {
+                throw new Exception("Veículo não encontrado");
+            }
 
-        public Task UpdateVeiculo(int id, VeiculoModel request)
-        {
-            throw new NotImplementedException();
+            vei.Placa = request.Placa;
+            vei.Combustivel = request.Combustivel;
+            vei.KmL = request.KmL;
+            vei.Modificacoes = request.Modificacoes;
+            vei.ProprietarioId = request.ProprietarioId;
+            vei.Proprietario = _dataContext.Proprietarios.FirstOrDefault(p => p.Id == request.ProprietarioId) ?? throw new Exception("Esse proprietario não existe!");
+
+            await _dataContext.SaveChangesAsync();
         }
     }
 }
