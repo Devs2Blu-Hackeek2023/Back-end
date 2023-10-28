@@ -33,12 +33,12 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpDelete("Id")]
-        public async Task<ActionResult> DeleteVeiculo(int id)
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> DeleteVeiculo(int Id)
         {
             try
             {
-                await _veiculoService.DeleteVeiculo(id);
+                await _veiculoService.DeleteVeiculo(Id);
                 return Ok("Veículo deletado com sucesso!");
             }
             catch (Exception e)
@@ -62,11 +62,11 @@ namespace Back_End.Controllers
         }
 
         [HttpGet("/veiculo/{Id}/Emissao")]
-        public async Task<ActionResult<double>> GetEmissaoDiaByVeiculoId(int id, DateTime data)
+        public async Task<ActionResult<double>> GetEmissaoDiaByVeiculoId(int Id, DateTime data)
         {
             try
             {
-                var result = await _veiculoService.GetEmissaoDiaVeiculo(id, data);
+                var result = await _veiculoService.GetEmissaoDiaVeiculo(Id, data);
                 return Ok(result);
             }
             catch (Exception e)
@@ -75,7 +75,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<VeiculoModel>> GetVeiculoById(int Id)
         {
             try
@@ -105,12 +105,12 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpPut("Id")]
-        public async Task<ActionResult> UpdateVeiculo(int id, VeiculoPutDTO request)
+        [HttpPut("{Id}")]
+        public async Task<ActionResult> UpdateVeiculo(int Id, VeiculoPutDTO request)
         {
             try
             {
-                await _veiculoService.UpdateVeiculo(id, request);
+                await _veiculoService.UpdateVeiculo(Id, request);
                 return Ok("Cadastro alterado com sucesso!");
             }
             catch (Exception e)

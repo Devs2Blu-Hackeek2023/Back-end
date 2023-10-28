@@ -18,7 +18,7 @@ namespace Back_End.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<RuaModel>>> GetAllRuas()
+        public async Task<ActionResult<List<RuaGetDTO>>> GetAllRuas()
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Back_End.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult> GetRuaById(int Id)
+        public async Task<ActionResult<RuaGetDTO>> GetRuaById(int Id)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Back_End.Controllers
         {
             try
             {
-                var rua = await _ruaService.GetRuaByCEP(CEP);
+                var rua = _ruaService.GetRuaByCEP(CEP);
                 return Ok(rua);
             }catch(Exception ex)
             {
@@ -119,7 +119,7 @@ namespace Back_End.Controllers
         {
             try
             {
-                _ruaService.UpdateRua(Id, rua);
+                await _ruaService.UpdateRua(Id, rua);
                 return Ok("Rua atualizada");
             }catch(Exception ex)
             {
