@@ -1,12 +1,10 @@
-﻿using Back_End.Model;
+﻿using Back_End.DTOs;
 
 namespace Back_End.Services.Interfaces
 {
-    public interface IUsuarioService
-    {
-        Task UpdateSenha(int id, string request, string newSenha, string confirmationSenha); 
-        
-        Task CreateUsuario(UsuarioModel model);
-
-    }
+	public interface IUsuarioService
+	{
+		Task RegistrarUsuario(UsuarioDTO usuarioDTO);
+		Task UpdateSenha(int id, string request, string newSenha, string confirmationSenha);
+	}
 }

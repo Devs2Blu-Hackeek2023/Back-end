@@ -2,6 +2,7 @@
 {
     public class RuaGetDTO
     {
+        public int Id { get; set; }
         public string cep { get; set; } = string.Empty;
         public string rua { get; set; } = string.Empty;
         public string bairro { get; set; } = string.Empty;

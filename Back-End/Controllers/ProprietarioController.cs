@@ -1,12 +1,11 @@
 ﻿using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProprietarioController : ControllerBase
     {
