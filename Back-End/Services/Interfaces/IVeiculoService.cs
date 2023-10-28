@@ -3,14 +3,14 @@ using Back_End.Model;
 
 namespace Back_End.Services.Interfaces
 {
-    public interface IVeiculoService
-    {
-        Task<VeiculoModel> GetVeiculoById(int id); //ok*
-        Task<VeiculoModel> GetVeiculoByPlaca(string placa); //ok*
-        Task<List<VeiculoModel>> GetAllVeiculos(); //ok*
-        Task CreateVeiculo(VeiculoPostDTO request); //ok*
-        Task DeleteVeiculo(int id); //ok*
-        Task<double> GetEmissaoDiaVeiculo(int id, DateTime data); //ok*
-        Task UpdateVeiculo(int id, VeiculoPutDTO request); //ok*
-    }
+	public interface IVeiculoService
+	{
+		Task<VeiculoModel> GetVeiculoById(int id);
+		Task<VeiculoModel> GetVeiculoByPlaca(string placa);
+		Task<List<VeiculoModel>> GetAllVeiculos();
+		Task CreateVeiculo(VeiculoPostDTO request);
+		Task DeleteVeiculo(int id);
+		Task<double> GetEmissaoDiaVeiculo(int id, DateTime data);
+		Task UpdateVeiculo(int id, VeiculoPutDTO request);
+	}
 }

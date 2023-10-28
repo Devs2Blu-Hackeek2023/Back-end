@@ -1,48 +1,39 @@
-﻿using Back_End.Model;
+﻿using Back_End.DTOs;
 using Back_End.Services.Interfaces;
-using BCrypt.Net;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsuarioController : ControllerBase
-    {
-        private readonly IUsuarioService _usuararioService;
+	[Route("[controller]")]
+	[ApiController]
+	public class UsuarioController : ControllerBase
+	{
+		private readonly IUsuarioService _usuarioService;
 
-        public UsuarioController(IUsuarioService usuararioService)
-        {
-            _usuararioService = usuararioService;
-        }
+		public UsuarioController(IUsuarioService usuarioService) { _usuarioService = usuarioService; }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateUser(UsuarioModel request)
-        {
-            try
-            {
-                request.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.PasswordHash);
-                await _usuararioService.CreateUsuario(request);
-                return Ok("Usuário criado");
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+		[HttpPost]
+		public async Task<IActionResult> RegistrarUsuario(UsuarioDTO request)
+		{
+			try
+			{
+				await _usuarioService.RegistrarUsuario(request);
+				
+				return Ok("Usuário criado com sucesso.");
+			}
+			catch (Exception ex) { return BadRequest(ex.Message); }
+		}
 
-        [HttpPost("Id")]
-        public async Task<ActionResult> RedefinedPassword(int Id, string password, string newPassword, string confirmationPassword)
-        {
-            try
-            {
-                await _usuararioService.UpdateSenha(Id, password, newPassword, confirmationPassword);
-                return Ok("Senha redefinida com sucesso");
-            }catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-         
-    }
+		[HttpPost("Id")]
+		public async Task<ActionResult> RedefinedPassword(int Id, string password, string newPassword, string confirmationPassword)
+		{
+			try
+			{
+				await _usuarioService.UpdateSenha(Id, password, newPassword, confirmationPassword);
+
+				return Ok("Senha redefinida com sucesso.");
+			}
+			catch (Exception ex) { return BadRequest(ex.Message); }
+		}
+	}
 }
