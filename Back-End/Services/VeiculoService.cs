@@ -2,9 +2,7 @@
 using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace Back_End.Services
 {
@@ -18,7 +16,6 @@ namespace Back_End.Services
         }
         public async Task CreateVeiculo(VeiculoPostDTO request)
         {
-            //ProprietarioModel prop = new ProprietarioModel();
             VeiculoModel vei = new VeiculoModel();
             vei.Placa = request.Placa;
             vei.Modelo = request.Modelo;
@@ -43,7 +40,7 @@ namespace Back_End.Services
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado! 404");
             _dataContext.Veiculos.Remove(veiculo);
             await _dataContext.SaveChangesAsync();
-            
+
         }
 
         public async Task<List<VeiculoModel>> GetAllVeiculos()
@@ -51,12 +48,12 @@ namespace Back_End.Services
             return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado!");
         }
 
-        public async Task<double> GetEmissaoDiaVeiculo(int id, DateTime data)
+        public async Task<double> GetEmissaoDiaVeiculo(int id, int data)
         {
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado!");
 
             var totalCO2 = await _dataContext.Emissoes
-                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Date == data.Date)
+                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.DayOfYear == data)
                 .Select(emissao => emissao.CO2 ?? 0.0)
                 .SumAsync();
 
@@ -68,7 +65,7 @@ namespace Back_End.Services
             var veiculo = await _dataContext.Veiculos.FindAsync(Id);
             if (veiculo is null) throw new Exception("Veículo não encontrado");
             else return veiculo;
-            
+
         }
 
         public async Task<VeiculoModel> GetVeiculoByPlaca(string placa)
@@ -76,7 +73,7 @@ namespace Back_End.Services
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Placa == placa);
             if (veiculo is null) throw new Exception("Veículo não encontrado");
             else return veiculo;
-            
+
         }
 
         public double? GetMediaGeralDeEmissoesByCategoria(string categoria)
@@ -92,7 +89,7 @@ namespace Back_End.Services
             var ultimos6 = mesAtual - 6;
             List<double?> retorno = new List<double?>();
 
-            for(int i = ultimos6; i <= mesAtual; i++)
+            for (int i = ultimos6; i <= mesAtual; i++)
             {
                 var emissao = _dataContext.Emissoes.Where(e => e.VeiculoId == IdCarro && e.DataInicio.Month == i).Select(e => e.CO2 ?? 0.0).Sum();
                 retorno.Add(emissao);
