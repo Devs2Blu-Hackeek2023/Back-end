@@ -16,13 +16,13 @@ namespace Back_End.Controllers
 			_ruaService = ruaService;
 		}
 
-		[HttpGet]
-		public async Task<ActionResult<List<RuaModel>>> GetAllRuas()
-		{
-			try
-			{
-				var ruas = await _ruaService.GetAllRuas();
-				return Ok(ruas);
+        [HttpGet]
+        public async Task<ActionResult<List<RuaGetDTO>>> GetAllRuas()
+        {
+            try
+            {
+                var ruas = await _ruaService.GetAllRuas();
+                return Ok(ruas);
 
 			}
 			catch (Exception ex)
@@ -31,33 +31,32 @@ namespace Back_End.Controllers
 			}
 		}
 
-		[HttpGet("{Id}")]
-		public async Task<ActionResult> GetRuaById(int Id)
-		{
-			try
-			{
-				var rua = await _ruaService.GetRuaById(Id);
-				return Ok(rua);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<RuaGetDTO>> GetRuaById(int Id)
+        {
+            try
+            {
+                var rua = await _ruaService.GetRuaById(Id);
+                return Ok(rua);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-		[HttpGet("cep/{CEP}")]
-		public async Task<ActionResult<RuaGetDTO>> GetRuaByCEP(string CEP)
-		{
-			try
-			{
-				var rua = await _ruaService.GetRuaByCEP(CEP);
-				return Ok(rua);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
+        [HttpGet("cep/{CEP}")]
+        public async Task<ActionResult<RuaGetDTO>> GetRuaByCEP(string CEP)
+        {
+            try
+            {
+                var rua = _ruaService.GetRuaByCEP(CEP);
+                return Ok(rua);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 		[HttpGet("{Id}/Total")]
 		public async Task<ActionResult<double>> GetTotalEmissao(int Id)
@@ -117,19 +116,18 @@ namespace Back_End.Controllers
 			}
 		}
 
-		[HttpPut("{Id}")]
-		public async Task<ActionResult> UpdateRua(int Id, RuaModel rua)
-		{
-			try
-			{
-				_ruaService.UpdateRua(Id, rua);
-				return Ok("Rua atualizada");
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
+        [HttpPut("{Id}")]
+        public async Task<ActionResult> UpdateRua(int Id,  RuaModel rua)
+        {
+            try
+            {
+                await _ruaService.UpdateRua(Id, rua);
+                return Ok("Rua atualizada");
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 	}
 }
