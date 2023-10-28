@@ -1,7 +1,9 @@
 ﻿using Back_End.Data;
 using Back_End.DTOs;
 using Back_End.Model;
+using Back_End.Models;
 using Back_End.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back_End.Services
 {
@@ -15,9 +17,10 @@ namespace Back_End.Services
 		public async Task RegistrarUsuario(UsuarioDTO usuarioDTO)
 		{
 			_usuario.Nome = usuarioDTO.Nome;
+			if (!(await _dataContext.Usuarios.FirstOrDefaultAsync(u => u.Username == usuarioDTO.Username) is null)) throw new Exception("Usuário já registrado, utilize outro nome.");
 			_usuario.Username = usuarioDTO.Username;
 			_usuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Password);
-			_usuario.Cargo = "usuario";
+			_usuario.Cargo = UsuarioRolesModel.Usuario;
 
 			await _dataContext.Usuarios.AddAsync(_usuario);
 			await _dataContext.SaveChangesAsync();
