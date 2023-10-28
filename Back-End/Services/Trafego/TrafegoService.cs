@@ -62,7 +62,6 @@ namespace Back_End.Services.Trafego
 		{
 			_timer.Elapsed += async (sender, e) => await IniciarTrafego();
 			SetRandomIntervalo(10, 150);
-			_timer.Elapsed += (sender, e) => IniciarTrafego();
 			_timer.AutoReset = true;
 			_timer.Start();
 		}

@@ -51,20 +51,18 @@ namespace Back_End.Services.Login
 			if (httpContext.User.Identity is not ClaimsIdentity claimsIdentity) return null;
 			else
 			{
-				Claim? id = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
 				Claim? nome = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 				Claim? username = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
-				Claim? role = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+				Claim? cargo = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
 
-				if (nome is null || username is null || role is null) return null;
+				if (nome is null || username is null || cargo is null) return null;
 				else
 				{
 					return new UsuarioDTO
 					{
-						Id = int.Parse(id.Value),
 						Nome = nome.Value,
 						Username = username.Value,
-						Role = role.Value
+						Cargo = cargo.Value
 					};
 				}
 			}
@@ -75,7 +73,7 @@ namespace Back_End.Services.Login
 			UsuarioDTO? usuario = GetUsuarioAtual(httpContext);
 
 			if (usuario is null) return "";
-			else return usuario.Role;
+			else return usuario.Cargo;
 		}
 
 		public bool AcessoPermitido(HttpContext httpContext, int id)
@@ -83,7 +81,7 @@ namespace Back_End.Services.Login
 			UsuarioDTO? usuario = GetUsuarioAtual(httpContext);
 
 			if (usuario is null) return false;
-			else return usuario.Role == UsuarioRolesModel.Admin || usuario.Id == id;
+			else return usuario.Cargo == UsuarioRolesModel.Admin || usuario.Id == id;
 		}
 
 		private string GerarToken(UsuarioModel usuario)
@@ -95,7 +93,7 @@ namespace Back_End.Services.Login
 			{
 				new Claim(ClaimTypes.Name, usuario.Nome),
 				new Claim(ClaimTypes.GivenName, usuario.Username),
-				new Claim(ClaimTypes.Role, usuario.Role)
+				new Claim(ClaimTypes.Role, usuario.Cargo)
 			};
 
 			JwtSecurityToken token = new(
