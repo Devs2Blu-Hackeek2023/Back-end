@@ -11,7 +11,8 @@ using Refit;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+var port = 5273;
+builder.Configuration["Urls"] = $"http://0.0.0.0:{port}";
 
 
 builder.Services.AddControllers();
