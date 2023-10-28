@@ -141,7 +141,14 @@ namespace Back_End.Services
 			return _context.Emissoes.Where(e => ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Year - e.DataInicio.Year) <= 0)).Select(e => e.CO2).ToList().Sum() ?? throw new Exception("Não há emissões registradas no último mês.");
 		}
 
-		public async Task UpdateEmissao(int id, EmissaoPutDTO request)
+        public double? GetEmissaoMediaGeral()
+        {
+			var lista = _context.Emissoes.Select(e => e.CO2).ToList();
+			var result = lista.Sum() / lista.Count;
+			return result;
+        }
+
+        public async Task UpdateEmissao(int id, EmissaoPutDTO request)
 		{
 			var model = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
 			model.DataFim = request.DataFim;

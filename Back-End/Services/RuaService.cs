@@ -20,7 +20,7 @@ namespace Back_End.Services
         public async Task CreateRua(RuaModel request)
         {
             var rua = _dataContext.Ruas.FirstOrDefault(c => c.CEP == request.CEP);
-            if(rua.CEP == request.CEP) throw new Exception("Cep já cadastrado!");
+          //  if(rua.CEP == request.CEP) throw new Exception("Cep já cadastrado!");
             _dataContext.Ruas.Add(request);
             await _dataContext.SaveChangesAsync();
         }
@@ -41,7 +41,7 @@ namespace Back_End.Services
         public async Task<double> GetEmissaoAnualRua(int Id)
         {
             var emissoes = await _dataContext.Emissoes
-                .Where(r => r.RuaId == Id && r.DataInicio.Year == DateTime.Now.Year)
+                .Where(r => r.RuaId == Id)// && r.DataInicio.Year == ano)
                 .Select(e => e.CO2)
                 .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse ano! 404");
 
@@ -51,11 +51,38 @@ namespace Back_End.Services
         public async Task<double> GetEmissaoMesRua(int Id)
         {
             var emissoes = await _dataContext.Emissoes
-                 .Where(r => r.RuaId == Id && r.DataInicio.Month == DateTime.Now.Month)
+                 .Where(r => r.RuaId == Id)// && r.DataInicio.Month == mes && r.DataInicio.Year == ano)
                  .Select(e => e.CO2)
                  .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
 
             return emissoes;
+        }
+
+      public async Task<double> GetEmissaoTalDiaRua(int Id, int mes, int ano, int dia)
+        {
+            var emissoes = await _dataContext.Emissoes
+                 .Where(r => r.RuaId == Id && r.DataInicio.Month == mes && r.DataInicio.Year == ano && r.DataInicio.DayOfYear == dia)
+                 .Select(e => e.CO2)
+                 .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
+
+            return emissoes;
+        }
+
+        public async Task<double> GetEmissaoUltimoDia(int Id)
+        {
+            var emissoes = await _dataContext.Emissoes
+                 .Where(e => ((DateTime.Now.Day - e.DataInicio.Day) <= 0) && ((DateTime.Now.Month - e.DataInicio.Month) <= 0) && ((DateTime.Now.Day - e.DataInicio.Day) <= 0) && e.RuaId ==Id)
+                 .Select(e => e.CO2)
+                 .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
+
+            return emissoes;
+        }
+
+        public double? GetEmissaoMediaGeral(int Id)
+        {
+            var lista = _dataContext.Emissoes.Where(e => e.RuaId == Id).Select(e => e.CO2).ToList();
+            var result = lista.Sum() / lista.Count;
+            return result;
         }
 
         public async Task<double> GetEmissaoTotalRua(int Id)

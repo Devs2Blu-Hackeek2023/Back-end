@@ -79,6 +79,28 @@ namespace Back_End.Services
             
         }
 
+        public double? GetMediaGeralDeEmissoesByCategoria(string categoria)
+        {
+            var veiculo = _dataContext.Veiculos.Where(v => v.Categoria == categoria).ToList();
+            var emissoes = _dataContext.Emissoes.Include(e => e.Veiculo).Where(e => e.Veiculo.Categoria == categoria).Select(e => e.CO2).ToList();
+            return emissoes.Sum() / emissoes.Count;
+        }
+
+        public List<double?> GetEmissoesUltimos6MesesByVeiculoId(int IdCarro)
+        {
+            var mesAtual = DateTime.Now.Month;
+            var ultimos6 = mesAtual - 6;
+            List<double?> retorno = new List<double?>();
+
+            for(int i = ultimos6; i <= mesAtual; i++)
+            {
+                var emissao = _dataContext.Emissoes.Where(e => e.VeiculoId == IdCarro && e.DataInicio.Month == i).Select(e => e.CO2 ?? 0.0).Sum();
+                retorno.Add(emissao);
+            }
+
+            return retorno;
+        }
+
         public async Task UpdateVeiculo(int id, VeiculoPutDTO request)
         {
             var vei = await _dataContext.Veiculos.Include(v => v.Proprietario).FirstOrDefaultAsync(v => v.Id == id);
