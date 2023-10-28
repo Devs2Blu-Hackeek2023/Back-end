@@ -3,6 +3,7 @@ using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Camera;
 using Back_End.Services.Interfaces;
+using Back_End.Services.Trafego;
 using Microsoft.EntityFrameworkCore;
 
 namespace Back_End.Services
@@ -10,71 +11,71 @@ namespace Back_End.Services
 	public class EmissaoService : IEmissaoService
 	{
 		private readonly DataContext _context;
+		private readonly ITrafegoService _trafegoService;
 		private readonly ICameraService _cameraService;
-		private static List<VeiculoModel> _veiculosAtuais = new List<VeiculoModel>();
 
-		public EmissaoService(DataContext context, ICameraService cameraService)
+		public EmissaoService(DataContext context, ITrafegoService trafegoService, ICameraService cameraService)
 		{
 			_context = context;
+			_trafegoService = trafegoService;
 			_cameraService = cameraService;
 		}
 
 		public async Task<EmissaoModel> IniciarEmissao()
 		{
-			var veiculo = await _cameraService.SortearVeiculoAsync() ?? throw new Exception("Veículo não encontrado.");
-			var rua = await _cameraService.SortearRuaAsync() ?? throw new Exception("Rua não encontrada.");
-			_veiculosAtuais.Add(veiculo);
+			var veiculo = await _trafegoService.SortearVeiculoAsync() ?? throw new Exception("Veículo não encontrado.");
+			var rua = await _trafegoService.SortearRuaAsync() ?? throw new Exception("Rua não encontrada.");
 
-			DateTime inicio = DateTime.Now;
+			DateTime inicio = _cameraService.SetInicio();
+
 			EmissaoPostDTO post = new EmissaoPostDTO(inicio, veiculo.Id, rua.Id);
+
 			var emissao = await CreateEmissao(post);
+
 			return emissao;
 		}
 
-        public async Task EncerrarEmissao(EmissaoModel emissao)
-        {
-            int tempo = _cameraService.SetTempo(300, 1200);
-            double co2 = CalculoEmissao(emissao.Id);
-            Thread.Sleep(tempo);
-            DateTime fim = DateTime.Now;
-            //DateTime fim = emissao.DataInicio.AddSeconds(segundos);
+		public async Task EncerrarEmissao(EmissaoModel emissao)
+		{
+			double co2 = await CalculoEmissao(emissao.Id);
+			DateTime fim = _cameraService.SetFinal();
 
-            EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
+			EmissaoPutDTO put = new EmissaoPutDTO(emissao.Id, fim, co2);
 
-            await UpdateEmissao(emissao.Id, put);
-            _veiculosAtuais.Remove(emissao.Veiculo);
-        }
+			await UpdateEmissao(emissao.Id, put);
+		}
 
-        public async Task Emissao()
+		public async Task Emissao()
 		{
 			var emissao = await IniciarEmissao();
 			await EncerrarEmissao(emissao);
 		}
 
-		public double CalculoEmissao(int id)
-		{
-			var emissao = _context.Emissoes.FirstOrDefault(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
-			var veiculo = _context.Veiculos.FirstOrDefault(v => v.Id == emissao.VeiculoId) ?? throw new Exception("Veículo não encontrado.");
-			var rua = _context.Ruas.FirstOrDefault(r => r.Id == emissao.RuaId) ?? throw new Exception("Rua não encontrada.");
-			var tipoCombustivel = veiculo.Combustivel;
-			var kmRua = rua.Comprimento;
-			var kmL = veiculo.KmL;
-			double constante = 0;
+        public async Task<double> CalculoEmissao(int id)
+        {
+            var emissao = await _context.Emissoes.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Emissão não encontrada.");
+            var veiculo = await _context.Veiculos.FirstOrDefaultAsync(v => v.Id == emissao.VeiculoId) ?? throw new Exception("Veículo não encontrado.");
+            var rua = await _context.Ruas.FirstOrDefaultAsync(r => r.Id == emissao.RuaId) ?? throw new Exception("Rua não encontrada.");
+            var tipoCombustivel = veiculo.Combustivel;
+            var kmRua = rua.Comprimento;
+            var kmL = veiculo.KmL;
+            double constante = 0;
 
-			if (tipoCombustivel.ToLower() == "gasolina") constante = 2.39;
-			else if (tipoCombustivel.ToLower() == "diesel") constante = 2.64;
-			else if (tipoCombustivel.ToLower() == "gás" || tipoCombustivel.ToLower() == "gas" || tipoCombustivel.ToLower() == "gnv") constante = 1.66;
-			else if (tipoCombustivel.ToLower() == "álcool" || tipoCombustivel.ToLower() == "alcool" || tipoCombustivel.ToLower() == "etanol") constante = 0.50;
-			else throw new Exception("Tipo de combustível inexistente.");
+            if (tipoCombustivel.ToLower() == "gasolina") constante = 2.39;
+            else if (tipoCombustivel.ToLower() == "diesel") constante = 2.64;
+            else if (tipoCombustivel.ToLower() == "gás" || tipoCombustivel.ToLower() == "gas" || tipoCombustivel.ToLower() == "gnv") constante = 1.66;
+            else if (tipoCombustivel.ToLower() == "álcool" || tipoCombustivel.ToLower() == "alcool" || tipoCombustivel.ToLower() == "etanol") constante = 0.50;
+            else throw new Exception("Tipo de combustível inexistente.");
 
-			double litros = kmRua / kmL;
+            double litros = kmRua / kmL;
 
-			double resultado = litros * constante;
+            double resultado = litros * constante;
 
-			return resultado;
-		}
+            return resultado;
+        }
 
-		public async Task<EmissaoModel> CreateEmissao(EmissaoPostDTO request)
+
+        public async Task<EmissaoModel> CreateEmissao(EmissaoPostDTO request)
 		{
 			EmissaoModel model = new EmissaoModel()
 			{

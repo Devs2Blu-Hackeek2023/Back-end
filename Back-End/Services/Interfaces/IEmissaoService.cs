@@ -10,7 +10,7 @@ namespace Back_End.Services.Interfaces
 		Task<EmissaoModel> CreateEmissao(EmissaoPostDTO request);
 		Task DeleteEmissao(int id);
 		Task UpdateEmissao(int id, EmissaoPutDTO request);
-		double CalculoEmissao(int id);
+		Task<double>  CalculoEmissao(int id);
 		double? GetEmissaoTotal();
 		double? GetEmissaoDeTalAno(int ano);
 		double? GetEmissaoDeTalMes(int mes, int ano);
