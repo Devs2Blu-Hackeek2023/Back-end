@@ -1,0 +1,64 @@
+name: Build e deploy de aplicação C#
+
+# Ativa o workflow apenas em alterações no diretório nginx na branch main
+on:
+  push:
+    branches:
+      - Feature/Dev
+    paths:
+      - 'Back-End/**'
+    pull_request:
+      types:
+        - review
+env:
+  IMAGE_NAME: ${{ secrets.IMAGECOMPOSE }} # Nome da imagem no dockerhub IMAGECOMPOSE 
+  DEPLOY_DIR: ${{ secrets.PATH_BACKVM }} # Local onde o projeto está localizado no servidor PATH_BACKVM ${{ secrets.PATH_BACKVM }}
+  BUILD_DIR: ${{ secrets.BUILD_DIR }} # Diretório do projeto para build BUILD_DIR ${{ secrets.BUILD_DIR }}
+  COMPOSE_SERVICE: ${{ secrets.COMPOSE_SERVICE }} # Nome do serviço dentro do docker-compose.yml COMPOSE_SERVICE ${{ secrets.COMPOSE_SERVICE }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Copia o estado atual do repositório
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      # Gera os metadados da imagem, como o nome dela e a tag, para serem usados no processo de build
+      - name: Extrair metadados a partir do repo
+        id: meta
+        uses: docker/metadata-action@v2
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=1.0
+
+      # Faz login no dockerhub para fazer o push
+      - name: Login no Dockerhub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
+
+      # Build e push da imagem para dockerhub
+      - name: Build e Push da imagem Docker
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ env.BUILD_DIR }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      # Faz SSH no servidor e executa o comando para subir o continer, atualizando a imagem e limpando imagens não utilizadas
+      - name: Deploy no servidor usando SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.APPS_HOST }}
+          username: ${{ secrets.ACTIONS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT_SSH }}
+          script: |
+            cd ${{ env.DEPLOY_DIR }} 
+            docker-compose up -d ${{ env.COMPOSE_SERVICE }}
+            docker image prune -a -f

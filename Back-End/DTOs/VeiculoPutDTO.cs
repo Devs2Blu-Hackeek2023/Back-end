@@ -1,6 +1,4 @@
-﻿using Back_End.Model;
-
-namespace Back_End.DTOs
+﻿namespace Back_End.DTOs
 {
     public class VeiculoPutDTO
     {

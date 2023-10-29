@@ -1,6 +1,4 @@
-﻿using Back_End.Model;
-
-namespace Back_End.DTOs
+﻿namespace Back_End.DTOs
 {
     public class VeiculoPostDTO
     {
@@ -15,6 +13,6 @@ namespace Back_End.DTOs
         public double KmL { get; set; }
         public string Modificacoes { get; set; } = string.Empty;
         public int ProprietarioId { get; set; }
-        
+
     }
 }

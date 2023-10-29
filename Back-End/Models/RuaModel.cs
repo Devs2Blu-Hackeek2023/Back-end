@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string CEP { get; set; } = string.Empty;
-        public double  Comprimento { get; set; }
+        public double Comprimento { get; set; }
     }
 }
