@@ -48,12 +48,12 @@ namespace Back_End.Services
             return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado!");
         }
 
-        public async Task<double> GetEmissaoDiaVeiculo(int id, int data)
+        public async Task<double> GetEmissaoDiaVeiculo(int id, int data, int mes, int ano)
         {
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado!");
 
             var totalCO2 = await _dataContext.Emissoes
-                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Day == data)
+                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Day == data && emissao.DataInicio.Month == mes && emissao.DataInicio.Year == ano)
                 .Select(emissao => emissao.CO2 ?? 0.0)
                 .SumAsync();
 

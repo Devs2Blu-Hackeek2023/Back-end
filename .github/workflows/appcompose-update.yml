@@ -32,11 +32,11 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest
+            type=raw,value=1.0
 
       # Faz login no dockerhub para fazer o push
       - name: Login no Dockerhub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASS }}
@@ -56,7 +56,7 @@ jobs:
         with:
           host: ${{ secrets.APPS_HOST }}
           username: ${{ secrets.ACTIONS_USER }}
-          key: ${{ secrets.ACTIONS_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT_SSH }}
           script: |
             cd ${{ env.DEPLOY_DIR }} 
