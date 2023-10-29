@@ -4,6 +4,7 @@ name: Build e deploy de aplicação C#.
 on:
   schedule:
     - cron: '*/1 * * * *'
+  push:
     branches:
       - testecd
     paths:
