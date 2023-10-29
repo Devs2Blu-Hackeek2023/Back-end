@@ -17,6 +17,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Configure git pull behavior
+      run: |
+        git config pull.rebase false
+        git config pull.ff only
+      
+
     - name: Pull 'Feature/Dev' to 'backup' branch
       run: git pull origin Feature/Dev:backup
+
 
