@@ -58,12 +58,12 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("/veiculo/{Id}/Emissao/dia/{dia}")]
-        public async Task<ActionResult<double>> GetEmissaoDiaByVeiculoId(int Id, int dia)
+        [HttpGet("/veiculo/{Id}/Emissao/dia/{dia}/mes/{mes}/ano/{ano}")]
+        public async Task<ActionResult<double>> GetEmissaoDiaByVeiculoId(int Id, int dia, int mes, int ano)
         {
             try
             {
-                var result = await _veiculoService.GetEmissaoDiaVeiculo(Id, dia);
+                var result = await _veiculoService.GetEmissaoDiaVeiculo(Id, dia, mes, ano);
                 return Ok(result);
             }
             catch (Exception e)

@@ -70,7 +70,7 @@ namespace Back_End.Services
         public async Task<double> GetEmissaoTalDiaRua(int Id, int mes, int ano, int dia)
         {
             var emissoes = await _dataContext.Emissoes
-                 .Where(r => r.RuaId == Id && r.DataInicio.Month == mes && r.DataInicio.Year == ano && r.DataInicio.DayOfYear == dia)
+                 .Where(r => r.RuaId == Id && r.DataInicio.Month == mes && r.DataInicio.Year == ano && r.DataInicio.Day == dia)
                  .Select(e => e.CO2)
                  .SumAsync() ?? throw new ArgumentNullException("Não tem emissões desse mês! 404");
 
@@ -87,7 +87,33 @@ namespace Back_End.Services
             return emissoes;
         }
 
-        public double? GetEmissaoMediaGeral(int Id)
+        public async Task<double?> GetEmissaoBairro(string bairro)
+        {
+            var emissoes = await GetAllRuas();
+            var result = new List<double?>();
+
+            foreach (var e in emissoes)
+            {
+                if (e.bairro.Equals(bairro)) result.Add(e.co2Total);
+            }
+
+            return result.Count > 0 || result != null ? result.Sum() : null;
+        }
+
+        /*public async Task<double?> GetEmissaoRegiao(string regiao)
+        {
+            var emissoes = await GetAllRuas();
+            var result = new List<double?>();
+
+            foreach(var e in Regioes)
+            {
+                if(regiao == e)
+                {
+
+                }
+            }
+        }*/
+            public double? GetEmissaoMediaGeral(int Id)
         {
             var lista = _dataContext.Emissoes.Where(e => e.RuaId == Id).Select(e => e.CO2).ToList();
             var result = lista.Sum() / lista.Count;
@@ -129,7 +155,8 @@ namespace Back_End.Services
                 bairro = result.Neighborhood,
                 cidade = result.City,
                 uf = result.StateInitials,
-                km = rua.Comprimento
+                km = rua.Comprimento,
+                co2Total = await GetEmissaoTotalRua(rua.Id)
             };
             return resposta;
         }

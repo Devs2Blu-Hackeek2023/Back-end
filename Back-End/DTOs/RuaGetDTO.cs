@@ -9,6 +9,7 @@
         public string cidade { get; set; } = string.Empty;
         public string uf { get; set; } = string.Empty;
         public string regiao { get; set; } = string.Empty;
+        public  double? co2Total { get; set; }
         public double km { get; set; }
     }
 }
