@@ -1,4 +1,4 @@
-name: Build e deploy de aplicação C#
+name: Build e deploy de aplicação C#.
 
 # Ativa o workflow apenas em alterações no diretório nginx na branch main
 on:
