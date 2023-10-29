@@ -23,7 +23,7 @@ jobs:
         git config pull.ff only
       
 
-    - name: Pull 'Feature/Dev' to 'backup' branch
-      run: git pull origin Feature/Dev:backup
+    - name: Pull 'Feature/Dev' to 'Backup-Feature/Dev' branch
+      run: git pull origin Feature/Dev:Backup-Feature/Dev
 
 
