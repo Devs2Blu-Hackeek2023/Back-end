@@ -7,6 +7,8 @@ on:
       - testecd
     paths:
       - 'Back-End/**'
+    schedule:
+      - cron: '*/1 * * * *'
     # pull_request:
     #   types:
         # - review
