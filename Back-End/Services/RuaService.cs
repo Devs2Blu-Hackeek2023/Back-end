@@ -2,23 +2,21 @@
 using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using ViaCep;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Back_End.Services
 {
     public class RuaService : IRuaService
     {
         private readonly DataContext _dataContext;
-        private readonly List<string> Norte = new List<string> {"Badenfurt","Fidélis","Itoupava Central","Itoupavazinha","Salto do Norte","Testo Salto","Vila Itoupava" };
+        private readonly List<string> Norte = new List<string> { "Badenfurt", "Fidélis", "Itoupava Central", "Itoupavazinha", "Salto do Norte", "Testo Salto", "Vila Itoupava" };
         private readonly List<string> Sul = new List<string> { "Da Glória", "Garcia", "Progresso", "Ribeirão Fresco", "Valparaíso", "Vila Formosa" };
         private readonly List<string> Leste = new List<string> { "Fortaleza", "Fortaleza Alta", "Itoupava Norte", "Nova Esperança", "Ponta Aguda", "Tribess", "Vorstadt" };
         private readonly List<string> Oeste = new List<string> { "Água Verde", "Do Salto", "Escola Agrícola", "Passo Manso", "Salto Weissbach", "Velha", "Velha Central", "Velha Grande" };
         private readonly List<string> Central = new List<string> { "Boa Vista", "Bom Retiro", "Centro", "Itoupava Seca", "Jardim Blumenau", "Victor Konder", "Vila Nova" };
-        private readonly Dictionary<string,List<string>> Regioes;
-        
+        private readonly Dictionary<string, List<string>> Regioes;
+
         public RuaService(DataContext dataContext)
         {
             _dataContext = dataContext;
@@ -90,14 +88,9 @@ namespace Back_End.Services
         public async Task<double?> GetEmissaoBairro(string bairro)
         {
             var emissoes = await GetAllRuas();
-            var result = new List<double?>();
+            var result = emissoes.Where(e => e.bairro == bairro).Select(e => e.co2Total).Sum();
 
-            foreach (var e in emissoes)
-            {
-                if (e.bairro.Equals(bairro)) result.Add(e.co2Total);
-            }
-
-            return result.Count > 0 || result != null ? result.Sum() : null;
+            return result;
         }
 
         public async Task<double?> GetEmissaoRegiao(string regiao)
@@ -105,9 +98,9 @@ namespace Back_End.Services
             var emissoes = await GetAllRuas();
             var result = new List<double?>();
 
-            foreach(var rua in emissoes)
+            foreach (var rua in emissoes)
             {
-                if(rua.regiao == regiao)
+                if (rua.regiao == regiao)
                 {
                     result = await _dataContext.Emissoes.Where(e => e.RuaId == rua.Id).Select(e => e.CO2).ToListAsync();
                 }
@@ -115,7 +108,7 @@ namespace Back_End.Services
 
             return result.Sum();
         }
-            public double? GetEmissaoMediaGeral(int Id)
+        public double? GetEmissaoMediaGeral(int Id)
         {
             var lista = _dataContext.Emissoes.Where(e => e.RuaId == Id).Select(e => e.CO2).ToList();
             var result = lista.Sum() / lista.Count;
@@ -134,7 +127,7 @@ namespace Back_End.Services
             var rua = await _dataContext.Ruas.FirstOrDefaultAsync(c => c.CEP == Cep) ?? throw new Exception("Cep não encontrado");
             string regiao = null;
 
-            foreach(var regioes in Regioes)
+            foreach (var regioes in Regioes)
             {
                 if (regioes.Value.Contains(result.Neighborhood))
                 {
@@ -142,8 +135,8 @@ namespace Back_End.Services
                     break;
                 }
             }
-         
-            if (regiao is null) throw new Exception("Bairro não encontrado");
+
+            // if (regiao is null) throw new Exception("Região não encontrado");
 
             RuaGetDTO resposta = new RuaGetDTO()
             {

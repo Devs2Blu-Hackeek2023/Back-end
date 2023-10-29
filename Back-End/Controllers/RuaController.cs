@@ -59,7 +59,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("emissao/{Id}/Total")]
+        [HttpGet("{Id}/emissao/Total")]
         public async Task<ActionResult<double>> GetTotalEmissao(int Id)
         {
             try
@@ -73,7 +73,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("emissao/{Id}/Ano/{ano}")]
+        [HttpGet("{Id}/emissao/Ano/{ano}")]
         public async Task<ActionResult<double>> GetYearEmissao(int Id, int ano)
         {
             try
@@ -87,7 +87,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("emissao/{Id}/ano/{ano}/mes/{mes}")]
+        [HttpGet("{Id}/emissao/ano/{ano}/mes/{mes}")]
         public async Task<ActionResult<double>> GetMesEmissao(int Id, int ano, int mes)
         {
             try
@@ -102,7 +102,7 @@ namespace Back_End.Controllers
         }
 
 
-        [HttpGet("emissao/{Id}/ano/{ano}/mes/{mes}/dia/{dia}")]
+        [HttpGet("{Id}/emissao/ano/{ano}/mes/{mes}/dia/{dia}")]
         public async Task<ActionResult<double>> GetDiaEmissao(int Id, int ano, int mes, int dia)
         {
             try
@@ -116,7 +116,7 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("emissao/{Id}/ultimo/dia")]
+        [HttpGet("{Id}/emissao/ultimo/dia")]
         public async Task<ActionResult<double>> GetDiaUltimo(int Id)
         {
             try
@@ -144,14 +144,29 @@ namespace Back_End.Controllers
             }
         }
 
-        [HttpGet("Regiao/{regiao}")]
+        [HttpGet("emissao/regiao/{regiao}")]
         public async Task<ActionResult<double>> GetEmissaoByRegiao(string regiao)
         {
             try
             {
                 var emissao = await _ruaService.GetEmissaoRegiao(regiao);
                 return Ok(emissao);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("emissao/bairro/{bairro}")]
+        public async Task<ActionResult<double>> GetEmissaoByBairro(string bairro)
+        {
+            try
+            {
+                var emissao = await _ruaService.GetEmissaoBairro(bairro);
+                return Ok(emissao);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
