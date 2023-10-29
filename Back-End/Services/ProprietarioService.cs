@@ -17,25 +17,26 @@ namespace Back_End.Services
 
         public async Task CreateProprietario(ProprietarioDTO request)
         {
-                ProprietarioModel prop = new ProprietarioModel();
-                prop.CNH = request.CNH;
-                prop.CPF = request.CPF;
-                prop.NomeCompleto = request.NomeCompleto;
-                prop.UsuarioId = request.UsuarioId;
-                if(!(await _data.Proprietarios.FirstOrDefaultAsync(i => i.UsuarioId == request.UsuarioId) is null)){
+            ProprietarioModel prop = new ProprietarioModel();
+            prop.CNH = request.CNH;
+            prop.CPF = request.CPF;
+            prop.NomeCompleto = request.NomeCompleto;
+            prop.UsuarioId = request.UsuarioId;
+            if (!(await _data.Proprietarios.FirstOrDefaultAsync(i => i.UsuarioId == request.UsuarioId) is null))
+            {
                 throw new Exception("Esse proprietário já possui uma conta.");
             }
-                prop.Usuario = await _data.Usuarios.FirstOrDefaultAsync(i => i.Id == request.UsuarioId) ?? throw new Exception("Usuário não existe");
+            prop.Usuario = await _data.Usuarios.FirstOrDefaultAsync(i => i.Id == request.UsuarioId) ?? throw new Exception("Usuário não existe");
 
-                
-                await _data.AddAsync(prop);
-                await _data.SaveChangesAsync();
-            
+
+            await _data.AddAsync(prop);
+            await _data.SaveChangesAsync();
+
         }
 
         public async Task DeleteProprietario(int Id)
         {
-            var request = await _data.Proprietarios.FindAsync(Id) ?? throw new Exception("Proprietário não encontrado"); 
+            var request = await _data.Proprietarios.FindAsync(Id) ?? throw new Exception("Proprietário não encontrado");
 
             _data.Proprietarios.Remove(request);
 
@@ -45,7 +46,7 @@ namespace Back_End.Services
 
         public async Task<List<ProprietarioModel>> GetAllProprietarios()
         {
-            var proprietarios = await _data.Proprietarios.ToListAsync() ?? throw new Exception("Nenhum funcionário encontrado"); 
+            var proprietarios = await _data.Proprietarios.ToListAsync() ?? throw new Exception("Nenhum funcionário encontrado");
             return proprietarios;
         }
 
@@ -73,7 +74,7 @@ namespace Back_End.Services
             else
             {
                 prop.Id = request.Id;
-                if(request.NomeCompleto != null && request.NomeCompleto != "string") prop.NomeCompleto = request.NomeCompleto;
+                if (request.NomeCompleto != null && request.NomeCompleto != "string") prop.NomeCompleto = request.NomeCompleto;
             }
             await _data.SaveChangesAsync();
 

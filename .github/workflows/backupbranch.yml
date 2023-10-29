@@ -1,0 +1,22 @@
+name: Backup on Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check PR merge
+      if: github.event.pull_request.merged == true
+      run: echo "PR was merged."
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Pull 'Feature/Dev' to 'backup' branch
+      run: git pull origin Feature/Dev:backup
+
