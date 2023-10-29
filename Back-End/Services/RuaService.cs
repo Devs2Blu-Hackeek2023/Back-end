@@ -2,18 +2,28 @@
 using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using ViaCep;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Back_End.Services
 {
     public class RuaService : IRuaService
     {
         private readonly DataContext _dataContext;
-
+        private readonly List<string> RNorte = new List<string> {"Badenfurt","Fidélis","Itoupava Central","Itoupavazinha","Salto do Norte","Testo Salto","Vila Itoupava" };
+        private readonly List<string> RSul = new List<string> { "Da Glória", "Garcia", "Progresso", "Ribeirão Fresco", "Valparaíso", "Vila Formosa" };
+        private readonly List<string> RLeste = new List<string> { "Fortaleza", "Fortaleza Alta", "Itoupava Norte", "Nova Esperança", "Ponta Aguda", "Tribess", "Vorstadt" };
+        private readonly List<string> ROeste = new List<string> { "Água Verde", "Do Salto", "Escola Agrícola", "Passo Manso", "Salto Weissbach", "Velha", "Velha Central", "Velha Grande" };
+        private readonly List<string> RCentral = new List<string> { "Boa Vista", "Bom Retiro", "Centro", "Itoupava Seca", "Jardim Blumenau", "Victor Konder", "Vila Nova" };
+        private readonly List<List<string>> Regioes;
+        
         public RuaService(DataContext dataContext)
         {
             _dataContext = dataContext;
+            Regioes = new List<List<string>> { RCentral, RSul, RNorte, RLeste, ROeste };
+
         }
 
         public async Task CreateRua(RuaModel request)
@@ -31,7 +41,7 @@ namespace Back_End.Services
             var retorno = new List<RuaGetDTO>();
             foreach (var rua in ruas)
             {
-                retorno.Add(GetRuaByCEP(rua.CEP));
+                retorno.Add(await GetRuaByCEP(rua.CEP));
             }
 
             return retorno;
@@ -89,15 +99,33 @@ namespace Back_End.Services
             return _dataContext.Emissoes.Where(r => r.RuaId == Id).Select(e => e.CO2).Sum() ?? throw new Exception("Não há emissões nessa rua! 404");
         }
 
-        public RuaGetDTO GetRuaByCEP(string Cep)
+        public async Task<RuaGetDTO> GetRuaByCEP(string Cep)
         {
+
             var result = new ViaCepClient().Search(Cep);
-            var rua = _dataContext.Ruas.FirstOrDefault(c => c.CEP == Cep) ?? throw new Exception("Cep não encontrado");
+            var rua = await _dataContext.Ruas.FirstOrDefaultAsync(c => c.CEP == Cep) ?? throw new Exception("Cep não encontrado");
+            string regiao = null;
+            if (!(RSul.Contains(result.Neighborhood) || ROeste.Contains(result.Neighborhood) || RLeste.Contains(result.Neighborhood) || RNorte.Contains(result.Neighborhood) || RCentral.Contains(result.Neighborhood))) throw new Exception("Bairo não encontrado");
+
+
+            foreach(var regioes in Regioes)
+            {
+                foreach(var bairro in regioes)
+                {
+                    if(bairro.ToLower() == result.Neighborhood.ToLower())
+                    {
+                         regiao = bairro;
+                    }
+                }
+            }
+            if (regiao is null) throw new Exception("Bairro não encontrado");
+
             RuaGetDTO resposta = new RuaGetDTO()
             {
                 Id = rua.Id,
                 cep = Cep,
                 rua = result.Street,
+                regiao = regiao,
                 bairro = result.Neighborhood,
                 cidade = result.City,
                 uf = result.StateInitials,
@@ -109,7 +137,7 @@ namespace Back_End.Services
         public async Task<RuaGetDTO> GetRuaById(int Id)
         {
             var rua = await _dataContext.Ruas.FirstAsync(r => r.Id == Id) ?? throw new ArgumentNullException("Rua não encontrada! 404");
-            return GetRuaByCEP(rua.CEP);
+            return await GetRuaByCEP(rua.CEP);
         }
 
         public async Task UpdateRua(int Id, RuaModel request)
