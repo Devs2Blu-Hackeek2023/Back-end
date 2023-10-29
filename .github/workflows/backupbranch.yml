@@ -3,7 +3,7 @@ name: Backup on Merge
 on:
   pull_request:
     types:
-      - closed
+      - Feature/Dev
 
 jobs:
   backup:

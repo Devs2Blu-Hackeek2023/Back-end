@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - Feature/Dev # O workflow será acionado quando houver um push para o branch Feature/Dev
+      - testecd # O workflow será acionado quando houver um push para o branch Feature/Dev
   pull_request:
     branches:
-      - Feature/Dev # O workflow também será acionado quando houver um pull request para o branch Feature/Dev
+      - testecd # O workflow também será acionado quando houver um pull request para o branch Feature/Dev
 
 jobs:
   build-and-test:

@@ -4,12 +4,12 @@ name: Build e deploy de aplicação C#
 on:
   push:
     branches:
-      - Feature/Dev
+      - testecd
     paths:
       - 'Back-End/**'
-    pull_request:
-      types:
-        - review
+    # pull_request:
+    #   types:
+        # - review
 env:
   IMAGE_NAME: ${{ secrets.IMAGECOMPOSE }} # Nome da imagem no dockerhub IMAGECOMPOSE 
   DEPLOY_DIR: ${{ secrets.PATH_BACKVM }} # Local onde o projeto está localizado no servidor PATH_BACKVM ${{ secrets.PATH_BACKVM }}
