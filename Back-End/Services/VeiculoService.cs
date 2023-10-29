@@ -53,7 +53,7 @@ namespace Back_End.Services
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Id == id) ?? throw new Exception("Veículo não encontrado!");
 
             var totalCO2 = await _dataContext.Emissoes
-                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.DayOfYear == data)
+                .Where(emissao => emissao.VeiculoId == id && emissao.DataInicio.Day == data)
                 .Select(emissao => emissao.CO2 ?? 0.0)
                 .SumAsync();
 
