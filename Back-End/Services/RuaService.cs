@@ -12,17 +12,17 @@ namespace Back_End.Services
     public class RuaService : IRuaService
     {
         private readonly DataContext _dataContext;
-        private readonly List<string> RNorte = new List<string> {"Badenfurt","Fidélis","Itoupava Central","Itoupavazinha","Salto do Norte","Testo Salto","Vila Itoupava" };
-        private readonly List<string> RSul = new List<string> { "Da Glória", "Garcia", "Progresso", "Ribeirão Fresco", "Valparaíso", "Vila Formosa" };
-        private readonly List<string> RLeste = new List<string> { "Fortaleza", "Fortaleza Alta", "Itoupava Norte", "Nova Esperança", "Ponta Aguda", "Tribess", "Vorstadt" };
-        private readonly List<string> ROeste = new List<string> { "Água Verde", "Do Salto", "Escola Agrícola", "Passo Manso", "Salto Weissbach", "Velha", "Velha Central", "Velha Grande" };
-        private readonly List<string> RCentral = new List<string> { "Boa Vista", "Bom Retiro", "Centro", "Itoupava Seca", "Jardim Blumenau", "Victor Konder", "Vila Nova" };
-        private readonly List<List<string>> Regioes;
+        private readonly List<string> Norte = new List<string> {"Badenfurt","Fidélis","Itoupava Central","Itoupavazinha","Salto do Norte","Testo Salto","Vila Itoupava" };
+        private readonly List<string> Sul = new List<string> { "Da Glória", "Garcia", "Progresso", "Ribeirão Fresco", "Valparaíso", "Vila Formosa" };
+        private readonly List<string> Leste = new List<string> { "Fortaleza", "Fortaleza Alta", "Itoupava Norte", "Nova Esperança", "Ponta Aguda", "Tribess", "Vorstadt" };
+        private readonly List<string> Oeste = new List<string> { "Água Verde", "Do Salto", "Escola Agrícola", "Passo Manso", "Salto Weissbach", "Velha", "Velha Central", "Velha Grande" };
+        private readonly List<string> Central = new List<string> { "Boa Vista", "Bom Retiro", "Centro", "Itoupava Seca", "Jardim Blumenau", "Victor Konder", "Vila Nova" };
+        private readonly Dictionary<string,List<string>> Regioes;
         
         public RuaService(DataContext dataContext)
         {
             _dataContext = dataContext;
-            Regioes = new List<List<string>> { RCentral, RSul, RNorte, RLeste, ROeste };
+            Regioes = new Dictionary<string, List<string>> { { "Norte", Norte }, { "Sul", Sul }, { "Leste", Leste }, { "Oeste", Oeste }, { "Central", Central } };
 
         }
 
@@ -100,19 +100,21 @@ namespace Back_End.Services
             return result.Count > 0 || result != null ? result.Sum() : null;
         }
 
-        /*public async Task<double?> GetEmissaoRegiao(string regiao)
+        public async Task<double?> GetEmissaoRegiao(string regiao)
         {
             var emissoes = await GetAllRuas();
             var result = new List<double?>();
 
-            foreach(var e in Regioes)
+            foreach(var rua in emissoes)
             {
-                if(regiao == e)
+                if(rua.regiao == regiao)
                 {
-
+                    result = await _dataContext.Emissoes.Where(e => e.RuaId == rua.Id).Select(e => e.CO2).ToListAsync();
                 }
             }
-        }*/
+
+            return result.Sum();
+        }
             public double? GetEmissaoMediaGeral(int Id)
         {
             var lista = _dataContext.Emissoes.Where(e => e.RuaId == Id).Select(e => e.CO2).ToList();
@@ -131,19 +133,16 @@ namespace Back_End.Services
             var result = new ViaCepClient().Search(Cep);
             var rua = await _dataContext.Ruas.FirstOrDefaultAsync(c => c.CEP == Cep) ?? throw new Exception("Cep não encontrado");
             string regiao = null;
-            if (!(RSul.Contains(result.Neighborhood) || ROeste.Contains(result.Neighborhood) || RLeste.Contains(result.Neighborhood) || RNorte.Contains(result.Neighborhood) || RCentral.Contains(result.Neighborhood))) throw new Exception("Bairo não encontrado");
-
 
             foreach(var regioes in Regioes)
             {
-                foreach(var bairro in regioes)
+                if (regioes.Value.Contains(result.Neighborhood))
                 {
-                    if(bairro.ToLower() == result.Neighborhood.ToLower())
-                    {
-                         regiao = bairro;
-                    }
+                    regiao = regioes.Key;
+                    break;
                 }
             }
+         
             if (regiao is null) throw new Exception("Bairro não encontrado");
 
             RuaGetDTO resposta = new RuaGetDTO()

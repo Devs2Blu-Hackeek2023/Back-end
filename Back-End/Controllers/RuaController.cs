@@ -144,7 +144,18 @@ namespace Back_End.Controllers
             }
         }
 
-
+        [HttpGet("Regiao/{regiao}")]
+        public async Task<ActionResult<double>> GetEmissaoByRegiao(string regiao)
+        {
+            try
+            {
+                var emissao = await _ruaService.GetEmissaoRegiao(regiao);
+                return Ok(emissao);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpPost]
