@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '*/1 * * * *'
 
-    env:
+env:
   IMAGE_NAME: ${{ secrets.IMAGECOMPOSE }} # Nome da imagem no dockerhub IMAGECOMPOSE 
   DEPLOY_DIR: ${{ secrets.PATH_BACKVM }} # Local onde o projeto está localizado no servidor PATH_BACKVM ${{ secrets.PATH_BACKVM }}
   BUILD_DIR: ${{ secrets.BUILD_DIR }} # Diretório do projeto para build BUILD_DIR ${{ secrets.BUILD_DIR }}
