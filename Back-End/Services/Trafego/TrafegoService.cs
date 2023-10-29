@@ -61,7 +61,7 @@ namespace Back_End.Services.Trafego
 
         private void IniciarTimer()
         {
-           
+
             _timer.Elapsed += async (sender, e) => await IniciarTrafego();
             SetRandomIntervalo(50, 200);
             _timer.AutoReset = true;
@@ -70,10 +70,10 @@ namespace Back_End.Services.Trafego
 
         public async Task IniciarTrafego()
         {
-           
+
             try
             {
-                
+
                 string JSON = JsonConvert.SerializeObject(new { });
                 StringContent content = new(JSON, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await http.PostAsync($"{_apiURL}/emissao/ia", content);
