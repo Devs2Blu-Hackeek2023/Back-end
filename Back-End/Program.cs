@@ -13,13 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 /*var port = 5273;
 builder.Configuration["Urls"] = $"http://0.0.0.0:{port}";*/
 
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); });
+
  //builder.Services.AddDbContext<DataContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineConnection")); });
+
 
 builder.Services.AddScoped<IProprietarioService, ProprietarioService>();
 builder.Services.AddScoped<IRuaService, RuaService>();
