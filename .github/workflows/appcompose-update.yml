@@ -56,7 +56,7 @@ jobs:
         with:
           host: ${{ secrets.APPS_HOST }}
           username: ${{ secrets.ACTIONS_USER }}
-          key: ${{ secrets.ACTIONS_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT_SSH }}
           script: |
             cd ${{ env.DEPLOY_DIR }} 
