@@ -15,6 +15,7 @@ namespace Back_End.Services.Interfaces
         Task<double> GetEmissaoTotalRua(int Id);
         Task<double> GetEmissaoTalDiaRua(int Id, int mes, int ano, int dia);
         Task<double> GetEmissaoUltimoDia(int Id);
+        Task<double?> GetEmissaoRegiao(string regiao);
         double? GetEmissaoMediaGeral(int Id);
 
     }

@@ -92,7 +92,7 @@ namespace Back_End.Controllers
         {
             try
             {
-                var emissao = await _ruaService.GetEmissaoMesRua(Id, ano, mes);
+                var emissao = await _ruaService.GetEmissaoMesRua(Id, mes, ano);
                 return Ok(emissao);
             }
             catch (Exception ex)
@@ -101,12 +101,13 @@ namespace Back_End.Controllers
             }
         }
 
+
         [HttpGet("emissao/{Id}/ano/{ano}/mes/{mes}/dia/{dia}")]
         public async Task<ActionResult<double>> GetDiaEmissao(int Id, int ano, int mes, int dia)
         {
             try
             {
-                var emissao = await _ruaService.GetEmissaoTalDiaRua(Id, ano, mes, dia);
+                var emissao = await _ruaService.GetEmissaoTalDiaRua(Id, mes, ano, dia);
                 return Ok(emissao);
             }
             catch (Exception ex)
@@ -143,7 +144,18 @@ namespace Back_End.Controllers
             }
         }
 
-
+        [HttpGet("Regiao/{regiao}")]
+        public async Task<ActionResult<double>> GetEmissaoByRegiao(string regiao)
+        {
+            try
+            {
+                var emissao = await _ruaService.GetEmissaoRegiao(regiao);
+                return Ok(emissao);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpPost]
