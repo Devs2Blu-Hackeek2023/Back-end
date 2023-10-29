@@ -50,7 +50,7 @@ namespace Back_End.Controllers
         {
             try
             {
-                var rua = _ruaService.GetRuaByCEP(CEP);
+                var rua = await _ruaService.GetRuaByCEP(CEP);
                 return Ok(rua);
             }
             catch (Exception ex)
