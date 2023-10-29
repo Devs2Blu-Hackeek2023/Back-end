@@ -23,7 +23,8 @@ namespace Back_End.Controllers
             {
                 var props = await _service.GetAllProprietarios();
                 return Ok(props);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -35,9 +36,10 @@ namespace Back_End.Controllers
             try
             {
                 var prop = await _service.GetProprietarioById(Id);
-                
+
                 return Ok(prop);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -50,7 +52,8 @@ namespace Back_End.Controllers
             {
                 await _service.CreateProprietario(proprietario);
                 return Ok(proprietario);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -63,7 +66,8 @@ namespace Back_End.Controllers
             {
                 await _service.DeleteProprietario(Id);
                 return Ok("Funcionário deletado com sucesso");
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

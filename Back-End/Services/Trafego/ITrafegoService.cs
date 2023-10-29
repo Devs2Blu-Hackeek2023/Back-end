@@ -2,10 +2,10 @@
 
 namespace Back_End.Services.Trafego
 {
-	public interface ITrafegoService
-	{
-		Task<RuaModel?> SortearRuaAsync();
-		Task<VeiculoModel?> SortearVeiculoAsync();
-		Task IniciarTrafego();
-	}
+    public interface ITrafegoService
+    {
+        Task<RuaModel?> SortearRuaAsync();
+        Task<VeiculoModel?> SortearVeiculoAsync();
+        Task IniciarTrafego();
+    }
 }
