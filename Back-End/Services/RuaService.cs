@@ -3,6 +3,7 @@ using Back_End.DTOs;
 using Back_End.Model;
 using Back_End.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using ViaCep;
 
 namespace Back_End.Services
@@ -84,16 +85,13 @@ namespace Back_End.Services
 
             return emissoes;
         }
-       public async Task<List<double?>> GetEmissoesUltimos30Dias(int Id)
+        public async Task<List<double?>> GetEmissoesUltimos30Dias(int Id)
         {
             var emissoes = new List<double?>();
-            var diaAtual = DateTime.Now.Day;
-            var dias30 = diaAtual - 30;
 
-            for(int i = dias30; i < diaAtual; i++)
+            for (int i = 0; i <= 30; i++)
             {
-                var entrada =  _dataContext.Emissoes.Where(e => e.RuaId == Id && e.DataInicio.Day > diaAtual ? (e.DataInicio.Day == i && e.DataInicio.Month ==DateTime.Now.Month-1) : (e.DataInicio.Day == i && e.DataInicio.Month == DateTime.Now.Month)).Select(e => e.CO2).Sum();
-                emissoes.Add(entrada);
+                emissoes.Add(_dataContext.Emissoes.Where(e => e.RuaId == Id && e.DataFim.Value.Day== DateTime.Now.Day- i).Sum(e => e.CO2));
             }
 
             return emissoes;
