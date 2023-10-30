@@ -1,9 +1,10 @@
-<h1 align="center">CO2 Now</h1>
+<div align="center"><img  width="300px" src="https://cdn.discordapp.com/attachments/1165114170858012712/1166204580133085235/co2now-logo.png?ex=6549a3a6&is=65372ea6&hm=0182f70d7713c46be0c3085b1cc587813f38ea4cb7f988a1a8fcc311a37e059f&"></div>
+
 <br>
 
 - 🌲 **Tema:** Meio Abiente
 - 🌾 **Stack:** C# + Flutter
-- 💡 **Ideia:** Mapeamento e monitoramento de CO2 emitido por veículos nas principais vias de Blumenau-SC
+- 💡 **Proposta:** Mapeamento e monitoramento de CO2 emitido por veículos nas principais vias de Blumenau-SC
 - 👫 **Integrantes:**
     - <a href="https://github.com/ednadepaula">Edna de Paula<a/>
     - <a href="https://github.com/GabrielDickmannSchneider">Gabriel Schneider<a/>
@@ -24,13 +25,14 @@
 
 ## 📑 Índice
 
-- [Back-End](#-back-end)
+- <a href="back-end">Back-End<a>
   - [UML](#-uml)
+  - [Fluxo](#-fluxo)
   - [Bibliotecas](#-bibliotecas)
   - [Endpoints](#-endpoints)
     - [Emissao](#emissao)
     - [Login](#login)
-    - [Proprietario](#proprietario)
+    - [Proprietario](#-proprietário)
     - [Rua](#rua)
     - [Trafego](#trafego)
     - [Usuário](#usuário)
@@ -45,6 +47,7 @@
 
 <br>
 
+<a name="back-end"></a>
 ## 🔌 Back-End
  
 **👯‍♂️ Integrantes:**  Edna de Paula, Gabriel Labes, Helena Luz, Rob Caputo e Vinicius Grossert
@@ -74,6 +77,10 @@
 - Swashbuckle.AspNetCore
 - System.IdentityModel.Tokens.Jwt
 - ViaCep
+
+### 🎢 Fluxo 
+
+<div align="center"><img  width="500px" src="https://cdn.discordapp.com/attachments/1165102190025785454/1168588464854421504/Diagrama_em_branco_2.png?ex=65524fd1&is=653fdad1&hm=ecb067f5fe35d31b8281d5816c37079b2e4624a3ed4febf5c29802f8acb814fd&"></div>
 
 ### 📍 Endpoints 
 
@@ -144,7 +151,23 @@
 
 ## 💻 Front-End
 
+**👯‍♂️ Integrantes:**  Gabriel Schneider e Lucas Schneider.
+
+**🔧 Tecnologias:**   <img src="https://img.shields.io/badge/Flutter-239120?style=for-the-badge&logo=flutter&logoColor=white&color=blue">
+  <img src="https://img.shields.io/badge/Dart-512BD4?style=for-the-badge&logo=dart&logoColor=white&color=blue"> 
+  <img src="https://img.shields.io/badge/Figma-512BD4?style=for-the-badge&logo=figma&logoColor=white&color=purple"> 
+
+<br>
+
 ### 🎢 Fluxo 
+
+<div align="center"><img  width="1000px" src="https://cdn.discordapp.com/attachments/1165114170858012712/1168586086046519297/Diagrama_em_branco_1.png?ex=65524d9a&is=653fd89a&hm=f95809ee29d72f6c20ef5412dfa9ca7ed5f2e54a40abbff26557f6d34e9938e0&"></div>
+
+### 🖍 Prototipação
+
+<div align="center"><img  width="200px" src="https://cdn.discordapp.com/attachments/1165114170858012712/1168578889220628670/Mobile.png?ex=655246e6&is=653fd1e6&hm=d602d1c7fc5026df11dd85ba6522f1ef0cab00c2e70e661ad9dfe7ffdc069e08&"></div>
+
+<div align="center"><a href="https://www.figma.com/proto/uTGEgnSGR9kWeFf303tEWv/Mobile?type=design&node-id=261-6465&t=RZAjlYAfBFz0Bgzr-1&scaling=scale-down&page-id=7%3A3&starting-point-node-id=322%3A6515&mode=design">Ver no figma</a></div>
 
 ### 🖼 Telas 
 
@@ -154,7 +177,27 @@
 
 ## ☁ DevOps
 
+**👯‍♂️ Integrantes:**  Jhonata Silva e Lucas Theiss.
+
+**🔧 Tecnologias:**   <img src="https://img.shields.io/badge/TerraForm-239120?style=for-the-badge&logo=terraform&logoColor=white&color=purple">
+  <img src="https://img.shields.io/badge/Ansible-512BD4?style=for-the-badge&logo=ansible&logoColor=white&color=red"> 
+  <img src="https://img.shields.io/badge/GitHub%20Actions-512BD4?style=for-the-badge&logo=github-actions&logoColor=white&color=purple"> 
+  <img src="https://img.shields.io/badge/EC2-512BD4?style=for-the-badge&logo=amazon-ec2&logoColor=white&color=orange"> 
+  <img src="https://img.shields.io/badge/AWS-512BD4?style=for-the-badge&logo=amazon-aws&logoColor=white&color=orange"> 
+  <img src="https://img.shields.io/badge/Docker-512BD4?style=for-the-badge&logo=docker&logoColor=white&color=blue"> 
+  <img src="https://img.shields.io/badge/Linux-512BD4?style=for-the-badge&logo=linux&logoColor=white&color=yellow"> 
+
+<br>
+
 ### 🎢 Fluxo 
 
 ### 🎛 Ferramentas
+
+<br>
+
+## 🔗 Referências
+
+ -  Calculo de Emissão de CO2
+     - <a href="https://www.autolexicon.net/en/articles/cng-compressed-natural-gas/">Fonte 1</a>
+     - <a href="https://impactful.ninja/the-carbon-footprint-of-ethanol/">Fonte 2</a>
 
