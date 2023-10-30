@@ -60,6 +60,6 @@ jobs:
           port: ${{ secrets.PORT_SSH }}
           script: |
             cd ${{ env.DEPLOY_DIR }}
-            docker pull &{{env.IMAGE_NAME }}
+            docker pull ${{env.IMAGE_NAME }}
             docker-compose up -d ${{ env.COMPOSE_SERVICE }}
             docker image prune -a -f
