@@ -2,6 +2,8 @@
 
 <br>
 
+- 🔗 **Link:**
+- 🕵️‍♀️ **Suporte:**
 - 🌲 **Tema:** Meio Abiente
 - 🌾 **Stack:** C# + Flutter
 - 💡 **Proposta:** Mapeamento e monitoramento de CO2 emitido por veículos nas principais vias de Blumenau-SC
@@ -18,36 +20,44 @@
 ## 🎇 Funcionalidades
 
 - 🔎 Mapeamento de emissão de CO2 por veiculo e por via
-- 📊 Analise e controle da dos de CO2 da cidade
+- 📊 Analise e controle dados de CO2 da cidade
 - 📟 Calculo de CO2*
+
+## 📴 Funcionalidades não implementadas
+
+- 🚗 Conexão com a API do Detran
+- 🎥 Sistemas de câmeras cobrindo as vias
+- 🦾 Intêligencia Artificial para a captura das placas
+ <div align="center"><img  width="600px" src="https://cdn.discordapp.com/attachments/1165434873008357447/1168643347183841391/copia.png?ex=655282ee&is=65400dee&hm=f757b7680991cbf60b13ae29750cdd4ed796a17d4cd6e57143b8a88c2196e7ae&"></div>
+
 
 <br>
 
 ## 📑 Índice
 
-- <a href="back-end">Back-End<a>
+- [Back-End](#-back-end)
   - [UML](#-uml)
-  - [Fluxo](#-fluxo)
-  - [Bibliotecas](#-bibliotecas)
+  - [Fluxo](#-fluxo-back-end)
+  - [Bibliotecas](#-bibliotecas-back-end)
   - [Endpoints](#-endpoints)
     - [Emissao](#emissao)
     - [Login](#login)
-    - [Proprietario](#-proprietário)
+    - [Proprietario](#proprietário)
     - [Rua](#rua)
     - [Trafego](#trafego)
     - [Usuário](#usuário)
     - [Veiculo](#veiculo)
 - [Front-End](#-front-end)
-  - [Fluxo](#-fluxo)
+  - [Fluxo](#-fluxo-front-end)
   - [Telas](#-telas)
-  - [Bibliotecas](#-bibliotecas)
+  - [Bibliotecas](#-bibliotecas-front-end)
 - [DevOps](#-devops)
-  - [Fluxo](#-fluxo)
+  - [Fluxo](#-fluxo-devops)
   - [Ferramentas](#-ferramentas)
+- [Referências](#-referências)
 
 <br>
 
-<a name="back-end"></a>
 ## 🔌 Back-End
  
 **👯‍♂️ Integrantes:**  Edna de Paula, Gabriel Labes, Helena Luz, Rob Caputo e Vinicius Grossert
@@ -63,7 +73,7 @@
 <div align="center"><img  width="500px" src="https://cdn.discordapp.com/attachments/1165434873008357447/1168392905195536384/Classe_UML_1.png"></div>
 
 
-### 📗 Bibliotecas 
+### 📗 Bibliotecas Back-End
 
 - BCrypt.Net-Next
 - Microsoft.AspNetCore.Authentication.JwtBearer
@@ -78,7 +88,7 @@
 - System.IdentityModel.Tokens.Jwt
 - ViaCep
 
-### 🎢 Fluxo 
+### 🎢 Fluxo Back-End
 
 <div align="center"><img  width="500px" src="https://cdn.discordapp.com/attachments/1165102190025785454/1168588464854421504/Diagrama_em_branco_2.png?ex=65524fd1&is=653fdad1&hm=ecb067f5fe35d31b8281d5816c37079b2e4624a3ed4febf5c29802f8acb814fd&"></div>
 
@@ -159,7 +169,7 @@
 
 <br>
 
-### 🎢 Fluxo 
+### 🎢 Fluxo Front-End
 
 <div align="center"><img  width="1000px" src="https://cdn.discordapp.com/attachments/1165114170858012712/1168586086046519297/Diagrama_em_branco_1.png?ex=65524d9a&is=653fd89a&hm=f95809ee29d72f6c20ef5412dfa9ca7ed5f2e54a40abbff26557f6d34e9938e0&"></div>
 
@@ -171,7 +181,7 @@
 
 ### 🖼 Telas 
 
-### 📗 Bibliotecas 
+### 📗 Bibliotecas Front-End
 
 <br>
 
@@ -189,7 +199,7 @@
 
 <br>
 
-### 🎢 Fluxo 
+### 🎢 Fluxo DevOps
 
 ### 🎛 Ferramentas
 
