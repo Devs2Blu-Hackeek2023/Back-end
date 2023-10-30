@@ -32,7 +32,7 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=1.0
+            type=raw,value=2.0
 
       # Faz login no dockerhub para fazer o push
       - name: Login no Dockerhub
@@ -59,6 +59,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT_SSH }}
           script: |
-            cd ${{ env.DEPLOY_DIR }} 
+            cd ${{ env.DEPLOY_DIR }}
+            docker pull &{{env.IMAGE_NAME }}
             docker-compose up -d ${{ env.COMPOSE_SERVICE }}
             docker image prune -a -f
