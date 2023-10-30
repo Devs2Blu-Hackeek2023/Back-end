@@ -172,6 +172,20 @@ namespace Back_End.Controllers
             }
         }
 
+        [HttpGet("{Id}/emissao/ultimos/30dias")]
+        public async Task<ActionResult<double>> GetEmissaoUltimos30diasById(int Id)
+        {
+            try
+            {
+                var emissao = await _ruaService.GetEmissoesUltimos30Dias(Id);
+                return Ok(emissao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> CreateRua(RuaModel rua)

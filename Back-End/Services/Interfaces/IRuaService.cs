@@ -18,6 +18,6 @@ namespace Back_End.Services.Interfaces
         Task<double?> GetEmissaoBairro(string bairro);
         Task<double?> GetEmissaoRegiao(string regiao);
         double? GetEmissaoMediaGeral(int Id);
-
+        Task<List<double?>> GetEmissoesUltimos30Dias(int Id);
     }
 }
