@@ -84,7 +84,20 @@ namespace Back_End.Services
 
             return emissoes;
         }
+       public async Task<List<double?>> GetEmissoesUltimos30Dias(int Id)
+        {
+            var emissoes = new List<double?>();
+            var diaAtual = DateTime.Now.Day;
+            var dias30 = diaAtual - 30;
 
+            for(int i = dias30; i < diaAtual; i++)
+            {
+                var entrada =  _dataContext.Emissoes.Where(e => e.RuaId == Id && e.DataInicio.Day > diaAtual ? (e.DataInicio.Day == i && e.DataInicio.Month ==DateTime.Now.Month-1) : (e.DataInicio.Day == i && e.DataInicio.Month == DateTime.Now.Month)).Select(e => e.CO2).Sum();
+                emissoes.Add(entrada);
+            }
+
+            return emissoes;
+        }
         public async Task<double?> GetEmissaoBairro(string bairro)
         {
             var emissoes = await GetAllRuas();
