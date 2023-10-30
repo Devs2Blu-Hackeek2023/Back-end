@@ -24,12 +24,10 @@
 
 ## 📑 Índice
 
-- [Back-End](#back-end)
-  - [Integrantes](#integrantes)
-  - [Tecnologias](#tecnologias)
-  - [UML](#uml)
-  - [Bibliotecas](#bibliotecas)
-  - [Endpoints](#endpoints)
+- [Back-End](#-back-end)
+  - [UML](#-uml)
+  - [Bibliotecas](#-bibliotecas)
+  - [Endpoints](#-endpoints)
     - [Emissao](#emissao)
     - [Login](#login)
     - [Proprietario](#proprietario)
@@ -37,13 +35,13 @@
     - [Trafego](#trafego)
     - [Usuário](#usuário)
     - [Veiculo](#veiculo)
-- [Front-End](#front-end)
-  - [Fluxo](#fluxo)
-  - [Telas](#telas)
-  - [Bibliotecas](#bibliotecas)
-- [DevOps](#devops)
-  - [Fluxo](#fluxo)
-  - [Ferramentas](#ferramentas)
+- [Front-End](#-front-end)
+  - [Fluxo](#-fluxo)
+  - [Telas](#-telas)
+  - [Bibliotecas](#-bibliotecas)
+- [DevOps](#-devops)
+  - [Fluxo](#-fluxo)
+  - [Ferramentas](#-ferramentas)
 
 <br>
 
