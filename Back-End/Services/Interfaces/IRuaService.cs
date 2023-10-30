@@ -10,6 +10,10 @@ namespace Back_End.Services.Interfaces
         Task<List<RuaGetDTO>> GetAllRuas();
         Task CreateRua(RuaModel request);
         Task UpdateRua(int Id, RuaModel request);
+        Task<List<RuaGetDTO>> GetRuasMaisPoluentes();
+        Task<List<List<double?>>> GetEmissoesUltimos5MesesMaisPoluentes();
+        Task<List<List<double?>>> GetEmissoesUltimos5AnosMaisPoluentes();
+
         Task<double> GetEmissaoMesRua(int Id, int mes, int ano);
         Task<double> GetEmissaoAnualRua(int Id, int ano);
         Task<double> GetEmissaoTotalRua(int Id);

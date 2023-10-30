@@ -106,6 +106,57 @@ namespace Back_End.Services
             return result;
         }
 
+        public async Task<List<RuaGetDTO>> GetRuasMaisPoluentes()
+        {
+            var ruas = await _dataContext.Ruas.ToListAsync();
+            var ruasDTO = new List<RuaGetDTO>();
+
+            foreach (var rua in ruas)
+            {
+                ruasDTO.Add(await GetRuaByCEP(rua.CEP));
+            }
+
+            return ruasDTO.OrderByDescending(r => r.co2Total).Take(5).ToList();
+        }
+
+        public async Task<List<List<double?>>> GetEmissoesUltimos5AnosMaisPoluentes()
+        {
+            var ruas = await GetRuasMaisPoluentes();
+            var emissoesRuas = new List<List<double?>>();
+
+            foreach (var rua in ruas)
+            {
+                var emissoes = new List<double?>();
+                for (int i = 0 ; i < 5; i++)
+                {
+                    emissoes.Add(_dataContext.Emissoes.Where(e => e.RuaId == rua.Id && e.DataFim.Value.Year == DateTime.Now.Year - i).Sum(e => e.CO2));
+                }
+                emissoesRuas.Add(emissoes);
+            }
+
+            return emissoesRuas;
+        }
+
+       public async Task<List<List<double?>>> GetEmissoesUltimos5MesesMaisPoluentes()
+        {
+            var ruas = await GetRuasMaisPoluentes();
+            var emissoesRuas = new List<List<double?>>();
+
+            foreach (var rua in ruas)
+            {
+                var emissoes = new List<double?>();
+                for (int i = 0; i < 5; i++)
+                {
+                    emissoes.Add(_dataContext.Emissoes.Where(e => e.RuaId == rua.Id && e.DataFim.Value.Month == DateTime.Now.Month - i).Sum(e => e.CO2));
+                }
+                emissoesRuas.Add(emissoes);
+
+            }
+
+            return emissoesRuas;
+        }
+
+
         public async Task<double?> GetEmissaoRegiao(string regiao)
         {
             var emissoes = await GetAllRuas();
