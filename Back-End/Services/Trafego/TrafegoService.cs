@@ -10,7 +10,7 @@ namespace Back_End.Services.Trafego
     {
         private readonly DataContext _context;
         HttpClient http = new HttpClient();
-        private readonly string _apiURL = "https://localhost:7205";
+        private readonly string _apiURL = "https://api.co2now.devs2blu.dev.br";
         private readonly Random _random;
         private readonly System.Timers.Timer _timer;
 
@@ -60,7 +60,8 @@ namespace Back_End.Services.Trafego
         private void SetRandomIntervalo(int minMiliSecs, int maxMiliSecs) { _timer.Interval = _random.Next(minMiliSecs * 1000, maxMiliSecs * 1000); }
 
         private void IniciarTimer()
-        { 
+        {
+           
             _timer.Elapsed += async (sender, e) => await IniciarTrafego();
             SetRandomIntervalo(50, 200);
             _timer.AutoReset = true;
@@ -69,8 +70,10 @@ namespace Back_End.Services.Trafego
 
         public async Task IniciarTrafego()
         {
+           
             try
             {
+                
                 string JSON = JsonConvert.SerializeObject(new { });
                 StringContent content = new(JSON, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await http.PostAsync($"{_apiURL}/emissao/ia", content);
@@ -82,3 +85,4 @@ namespace Back_End.Services.Trafego
         }
     }
 }
+
