@@ -43,9 +43,28 @@ namespace Back_End.Services
 
         }
 
-        public async Task<List<VeiculoModel>> GetAllVeiculos()
+        public async Task<List<VeiculoGetDTO>> GetVeiculoByProprietarioId(int id)
         {
-            return await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado!");
+            var veiculos = await _dataContext.Veiculos.Where(v => v.ProprietarioId == id).ToListAsync() ?? throw new Exception("Proprietário não tem veículos.");
+            List<VeiculoGetDTO> result = new List<VeiculoGetDTO>();
+
+            foreach(var v in veiculos)
+            {
+                result.Add(VeiculoToDTO(v));
+            }
+
+            return result;
+        }
+
+        public async Task<List<VeiculoGetDTO>> GetAllVeiculos()
+        {
+            var carros = await _dataContext.Veiculos.ToListAsync() ?? throw new Exception("Veículos não encontrado!");
+            List<VeiculoGetDTO> result = new List<VeiculoGetDTO>();
+
+            carros.ForEach(c => result.Add(VeiculoToDTO(c)));
+
+            return result;
+           
         }
 
         public async Task<double> GetEmissaoDiaVeiculo(int id, int data, int mes, int ano)
@@ -60,19 +79,19 @@ namespace Back_End.Services
             return totalCO2;
         }
 
-        public async Task<VeiculoModel> GetVeiculoById(int Id)
+        public async Task<VeiculoGetDTO> GetVeiculoById(int Id)
         {
             var veiculo = await _dataContext.Veiculos.FindAsync(Id);
             if (veiculo is null) throw new Exception("Veículo não encontrado");
-            else return veiculo;
+            else return VeiculoToDTO(veiculo);
 
         }
 
-        public async Task<VeiculoModel> GetVeiculoByPlaca(string placa)
+        public async Task<VeiculoGetDTO> GetVeiculoByPlaca(string placa)
         {
             var veiculo = await _dataContext.Veiculos.FirstOrDefaultAsync(v => v.Placa == placa);
             if (veiculo is null) throw new Exception("Veículo não encontrado");
-            else return veiculo;
+            else return VeiculoToDTO(veiculo);
 
         }
 
@@ -115,6 +134,28 @@ namespace Back_End.Services
             vei.Proprietario = _dataContext.Proprietarios.FirstOrDefault(p => p.Id == request.ProprietarioId) ?? throw new Exception("Esse proprietario não existe!");
 
             await _dataContext.SaveChangesAsync();
+        }
+
+        private VeiculoGetDTO VeiculoToDTO(VeiculoModel veiculo)
+        {
+            VeiculoGetDTO newCarro = new VeiculoGetDTO
+            {
+                Ano = veiculo.Ano,
+                Categoria = veiculo.Categoria,
+                Combustivel = veiculo.Combustivel,
+                KmL = veiculo.KmL,
+                Modelo = veiculo.Modelo,
+                Marca = veiculo.Marca,
+                Modificacoes = veiculo.Modificacoes,
+                Motor = veiculo.Motor,
+                Placa = veiculo.Placa,
+                Id = veiculo.Id,
+                ProprietarioId = veiculo.ProprietarioId
+            };
+
+            if (newCarro.Modificacoes == "string") newCarro.Modificacoes = "Nenhuma";
+
+            return newCarro;
         }
     }
 }

@@ -157,6 +157,45 @@ namespace Back_End.Controllers
             }
         }
 
+        [HttpGet("MaisPoluentes")]
+        public async Task<ActionResult<List<RuaGetDTO>>> GetRuasMaisPoluentes()
+        {
+            try{
+                var ruas = await _ruaService.GetRuasMaisPoluentes();
+                return Ok(ruas);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("MaisPoluentes/5anos")]
+        public async Task<ActionResult<List<List<double>>>> GetEmissaoRuasMaisPoluentes5Anos()
+        {
+            try
+            {
+                var emissao = await _ruaService.GetEmissoesUltimos5AnosMaisPoluentes();
+                return Ok(emissao);
+            }catch( Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("MaisPoluentes/5meses")]
+        public async Task<ActionResult<List<List<double>>>> GetEmissaoRuasMaisPoluentes5Meses()
+        {
+            try
+            {
+                var emissao = await _ruaService.GetEmissoesUltimos5MesesMaisPoluentes();
+                return Ok(emissao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> CreateRua(RuaModel rua)

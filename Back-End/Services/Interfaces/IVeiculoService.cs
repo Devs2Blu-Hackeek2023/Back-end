@@ -5,9 +5,10 @@ namespace Back_End.Services.Interfaces
 {
     public interface IVeiculoService
     {
-        Task<VeiculoModel> GetVeiculoById(int id);
-        Task<VeiculoModel> GetVeiculoByPlaca(string placa);
-        Task<List<VeiculoModel>> GetAllVeiculos();
+        Task<VeiculoGetDTO> GetVeiculoById(int id);
+        Task<VeiculoGetDTO> GetVeiculoByPlaca(string placa);
+        Task<List<VeiculoGetDTO>> GetVeiculoByProprietarioId(int id);
+        Task<List<VeiculoGetDTO>> GetAllVeiculos();
         Task CreateVeiculo(VeiculoPostDTO request);
         Task DeleteVeiculo(int id);
         Task<double> GetEmissaoDiaVeiculo(int id, int data, int mes, int ano);

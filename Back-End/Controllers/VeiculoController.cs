@@ -58,6 +58,20 @@ namespace Back_End.Controllers
             }
         }
 
+        [HttpGet("Proprietario/{id}")]
+        public async Task<ActionResult<List<VeiculoGetDTO>>> GetVeiculosByProprietarioId(int id)
+        {
+            try
+            {
+                var result = await _veiculoService.GetVeiculoByProprietarioId(id);
+                return Ok(result);
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
         [HttpGet("/veiculo/{Id}/Emissao/dia/{dia}/mes/{mes}/ano/{ano}")]
         public async Task<ActionResult<double>> GetEmissaoDiaByVeiculoId(int Id, int dia, int mes, int ano)
         {
@@ -86,6 +100,7 @@ namespace Back_End.Controllers
                 return BadRequest(e.Message);
             }
         }
+
 
         [HttpGet("emissao/veiculo/{Id}/6meses")]
         public async Task<ActionResult<List<double?>>> GetEmissaoUltimos6Meses(int Id)
