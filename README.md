@@ -183,6 +183,10 @@
 
 ### 📗 Bibliotecas Front-End
 
+- FL_charts
+- SideBarX
+- Http
+
 <br>
 
 ## ☁ DevOps
