@@ -35,6 +35,7 @@
 
 ## 📑 Índice
 
+- [Configurações](#-configurações)
 - [Back-End](#-back-end)
   - [UML](#-uml)
   - [Fluxo](#-fluxo-back-end)
@@ -58,8 +59,73 @@
 
 <br>
 
+## ⚙ Configurações
+
+Para configurar o ambiente e as ferramentas necessárias para o projeto, siga as instruções abaixo:
+
+### Configuração da AWS
+
+Certifique-se de configurar suas credenciais da AWS e definir as variáveis de ambiente apropriadas ou usar o AWS CLI.
+
+### Configuração do Terraform
+
+Antes de prosseguir, inicialize e aplique as configurações do Terraform. Além disso, você pode definir outras configurações específicas do projeto.
+
+### Configuração do Ansible
+
+Certifique-se de definir os hosts e inventários corretos para o Ansible. Você pode executar os playbooks Ansible após a configuração.
+
+### Configuração do GitHub Actions
+
+Utilize o GitHub Actions para automatizar a implantação e gerenciamento da infraestrutura na AWS. Você encontrará fluxos de trabalho no GitHub Actions para DevOps, Frontend e outros.
+
+## Uso
+
+Aqui estão exemplos de como usar as ferramentas no projeto:
+
+### Terraform
+
+Use o Terraform para criar, atualizar e destruir recursos na AWS. Um exemplo de configuração do backend S3 está disponível em [backend.tf](http://backend.tf).
+
+Um exemplo de criação de instância, grupo de segurança e chave SSH pode ser encontrado em [main.tf](main.tf).
+
+### Ansible
+
+O Ansible é usado para configurar recursos na AWS. Um exemplo de playbook Ansible está disponível em [playbook.yml](playbook.yml).
+
+### GitHub Actions
+
+O GitHub Actions é usado para automatizar processos. Existem dois fluxos de trabalho:
+
+- [deploy-c#.yml](deploy-c#.yml): Um fluxo de trabalho para construir e implantar uma aplicação C#.
+- [siriustech_vm.yml](siriustech_vm.yml): Um fluxo de trabalho para provisionar a infraestrutura AWS usando Terraform.
+
+## Instância EC2
+
+Após a configuração, você terá uma instância EC2 em execução com serviços Docker. A seguir, estão os arquivos de configuração para os serviços:
+
+### Clone do Git dockerfiles
+
+Você pode clonar o repositório Git do Dockerfiles para obter configurações de contêineres adicionais.
+
+### Pasta co2now
+
+- [docker-compose.yml](docker-compose.yml): Um arquivo de configuração do Docker Compose para o serviço "co2now".
+
+- [appsettings.json](appsettings.json): Um arquivo de configuração do aplicativo com informações de conexão e configurações JWT.
+
+### Pasta ngixloadbalancer
+
+- [docker-compose.yml](docker-compose.yml): Um arquivo de configuração do Docker Compose para um serviço nginx/load balancer.
+
+- [nginx.conf](nginx.conf): Um arquivo de configuração do Nginx para balanceamento de carga e redirecionamento de tráfego.
+
+<br> 
+
 ## 🔌 Back-End
- 
+
+**🔗 Link:** <a href="https://api.co2now.devs2blu.dev.br/swagger/index.html">https://api.co2now.devs2blu.dev.br</a>
+
 **👯‍♂️ Integrantes:**  Edna de Paula, Gabriel Labes, Helena Luz, Rob Caputo e Vinicius Grossert
 
 **🔧 Tecnologias:**  <img src="https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white">
@@ -161,6 +227,8 @@
 
 ## 💻 Front-End
 
+**🔗 Link:** <a href="https://co2now.devs2blu.dev.br/#/home">https://co2now.devs2blu.dev.br</a>
+
 **👯‍♂️ Integrantes:**  Gabriel Schneider e Lucas Schneider.
 
 **🔧 Tecnologias:**   <img src="https://img.shields.io/badge/Flutter-239120?style=for-the-badge&logo=flutter&logoColor=white&color=blue">
@@ -184,8 +252,6 @@
 
 <div align="center"><a href="https://www.figma.com/file/os1JcLsUkGJfe9orrKnOfp/Web-user?type=design&node-id=27%3A6743&mode=design&t=4KqZo93m6bpWTKcc-1">Ver no figma</a></div>
 
-### 🖼 Telas 
-
 ### 📗 Bibliotecas Front-End
 
 <br>
@@ -202,11 +268,17 @@
   <img src="https://img.shields.io/badge/Docker-512BD4?style=for-the-badge&logo=docker&logoColor=white&color=blue"> 
   <img src="https://img.shields.io/badge/Linux-512BD4?style=for-the-badge&logo=linux&logoColor=white&color=yellow"> 
 
+**📜 Documentaçõa detalhada:** <a href="https://quickest-macrame-144.notion.site/Sirius-Tech-28bc51cc5927497cbea9aa70b6744874">Link no Notion<a/>
+
 <br>
 
 ### 🎢 Fluxo DevOps
 
-### 🎛 Ferramentas
+
+<div align="center"><img  width="800px" src="https://cdn.discordapp.com/attachments/1165434873008357447/1168941329951248384/image.png?ex=65539872&is=65412372&hm=48bd2ba7c26ffc7fe61afceabfac091282f5ee9cc1b2409fceca50e6297d2fb3&"></div>
+<br>
+<div align="center"><img  width="1000px" src="https://cdn.discordapp.com/attachments/1165434873008357447/1168941330316132412/image.png?ex=65539873&is=65412373&hm=52aeafd125ea6710b3aa725baf58dda8384af8959bcbe1877af3c3a1608fa4ed&"></div>
+
 
 <br>
 
