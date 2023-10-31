@@ -89,9 +89,9 @@
 - ```POST - Emissao/ia``` Cria uma nova emissão simulando uma Inteligência Artificial, com rua e veiculos aleatorios.
 - ```POST - Emissao``` Fornece os dados iniciais para gerar a emissão de um determinado veículo em uma rua específica.
 - ```GET - Emissao``` Retorna a lista de todas as emissões de CO2 de todos os veículos em todas as ruas registrados no banco de dados.
-- ```DELETE - Emissao{Id}``` Deleta uma emissão de CO2 identificada pelo Id informado no parâmetro.
-- ```GET - Emissao{Id}``` Retorna a emissão de CO2 identificada pelo Id informado no parâmetro.
-- ```PUT - Emissao{Id}``` Altera os dados de emissão de CO2 identificada pelo Id informado no parâmetro.
+- ```DELETE - Emissao/{Id}``` Deleta uma emissão de CO2 identificada pelo Id informado no parâmetro.
+- ```GET - Emissao/{Id}``` Retorna a emissão de CO2 identificada pelo Id informado no parâmetro.
+- ```PUT - Emissao/{Id}``` Altera os dados de emissão de CO2 identificada pelo Id informado no parâmetro.
 - ```GET - Emissao/total``` Retorna o somatório de todas as emissões de CO2 de todos os veículos em todas as ruas registrados no banco de dados.
 - ```GET - Emissao/total/ano/{ano}``` Retorna o somatório de todas as emissões de CO2 de todos os veículos em todas as ruas registrados no ano informado no parêmetro.
 - ```GET - Emissao/total/mes/{mes}/ano/{ano}``` Retorna o somatório de todas as emissões de CO2 de todos os veículos em todas as ruas registrados no mês e ano informado no parêmetro.
@@ -112,7 +112,7 @@
 #### Rua
 - ```POST - Rua``` Cria uma nova rua.
 - ```GET - Rua``` Retorna todas as ruas resgistradas no banco de dados.
-- ```GET - Rua/Id``` Retorna a rua resgistrada no banco de dados, identificada pelo Id informado no parâmetro.
+- ```GET - Rua/{Id}``` Retorna a rua resgistrada no banco de dados, identificada pelo Id informado no parâmetro.
 - ```GET - Rua/cep/{CEP}``` Retorna a rua resgistrada no banco de dados, identificada pelo CEP informado no parâmetro.
 - ```GET - Rua/{Id}/emissao/Total``` Retorna o total de emissão de CO2 na rua identificada pelo Id informado no parâmetro.
 - ```GET - Rua/{Id}/emissao/Ano/{ano}``` Retorna o total de emissão de CO2 durante o ano informado no parâmetro, na rua identificada pelo Id informado no parêmetro.
@@ -168,6 +168,11 @@
 <div align="center"><img  width="200px" src="https://cdn.discordapp.com/attachments/1165114170858012712/1168578889220628670/Mobile.png?ex=655246e6&is=653fd1e6&hm=d602d1c7fc5026df11dd85ba6522f1ef0cab00c2e70e661ad9dfe7ffdc069e08&"></div>
 
 <div align="center"><a href="https://www.figma.com/proto/uTGEgnSGR9kWeFf303tEWv/Mobile?type=design&node-id=261-6465&t=RZAjlYAfBFz0Bgzr-1&scaling=scale-down&page-id=7%3A3&starting-point-node-id=322%3A6515&mode=design">Ver no figma</a></div>
+<br>
+
+<div align="center"><img  width="800px" src="https://cdn.discordapp.com/attachments/1165434873008357447/1168691829223473152/Screenshot_2023-10-30_202244.png?ex=6552b015&is=65403b15&hm=50df283dbe8d3940820e7f0daa6ab7a2524983107280bd1762bb5f4f435b3c15&"></div>
+
+<div align="center"><a href="https://www.figma.com/file/os1JcLsUkGJfe9orrKnOfp/Web-user?type=design&node-id=27%3A6743&mode=design&t=4KqZo93m6bpWTKcc-1">Ver no figma</a></div>
 
 ### 🖼 Telas 
 
