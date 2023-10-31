@@ -254,6 +254,10 @@ Você pode clonar o repositório Git do Dockerfiles para obter configurações d
 
 ### 📗 Bibliotecas Front-End
 
+- FL_charts
+- SideBarX
+- Http
+
 <br>
 
 ## ☁ DevOps
